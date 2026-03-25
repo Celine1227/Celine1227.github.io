@@ -195,7 +195,7 @@
 
         .hero-photo {
             width: 100%;
-            height: 380px;
+            height: 430px;
             background: linear-gradient(160deg, #CBD5E1 0%, #94A3B8 100%);
             border-radius: 1.5rem 1.5rem 0 0;
             overflow: hidden;
@@ -205,7 +205,7 @@
             width: 100%;
             height: 100%;
             object-fit: cover;
-            object-position: center 70%;
+            object-position: center 40%;
         }
 
         /* ── SHARED ── */
@@ -430,7 +430,7 @@
 
         .balance-wrap {
             display: grid;
-            grid-template-columns: 1fr 1fr;
+            grid-template-columns: 1fr 300px;
             gap: 2rem;
             max-width: 1040px;
             margin: 0 auto;
@@ -491,38 +491,34 @@
             line-height: 1.5;
         }
 
-        .balance-photo-panel {
+        .balance-video-panel {
             position: sticky;
             top: 7rem;
             border-radius: 1.75rem;
             overflow: hidden;
             box-shadow: 0 20px 50px rgba(0, 0, 0, .12);
-            aspect-ratio: 4/3;
+            aspect-ratio: 9/16;
+            max-height: 75vh;
             border: 1px solid var(--border);
+            background: #000;
         }
 
-        .b-photo {
+        .b-video {
             position: absolute;
             inset: 0;
             opacity: 0;
             transition: opacity .45s var(--ease-out);
         }
 
-        .b-photo.show {
+        .b-video.show {
             opacity: 1;
         }
 
-        .b-photo-bg {
-            position: absolute;
-            inset: 0;
-            background-size: cover;
-            background-position: center;
-            transform: scale(1.06);
-            transition: transform .5s var(--ease-out);
-        }
-
-        .b-photo.show .b-photo-bg {
-            transform: scale(1);
+        .b-video video {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
         }
 
         /* ── PROJECTS ── */
@@ -909,62 +905,16 @@
             margin-top: 2.75rem;
         }
 
-        .txn-flow {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 0;
-            margin-bottom: 1.5rem;
-        }
-
-        .txn-col-head {
-            padding: .6rem;
-            text-align: center;
-            border: .5px solid var(--border);
-        }
-
-        .txn-col-head:first-child {
-            border-radius: 8px 0 0 0;
-            background: var(--blue-light);
-        }
-
-        .txn-col-head:nth-child(2) {
-            border-left: none;
-            background: var(--blue-pale);
-        }
-
-        .txn-col-head:last-child {
-            border-left: none;
-            border-radius: 0 8px 0 0;
-            background: #BFDBFE;
-        }
-
-        .txn-phase {
-            font-size: 11px;
-            font-weight: 700;
-            color: var(--navy);
-            margin-bottom: .15rem;
-        }
-
-        .txn-sub {
-            font-size: 10px;
-            color: var(--blue);
-        }
-
-        .txn-col-body {
-            padding: .6rem;
-            border: .5px solid var(--border);
-            border-top: none;
-            min-height: 90px;
-            font-size: 10.5px;
+        .nda-note1 {
+            padding: .8rem 1.1rem;
+            border-left: 3px solid var(--border);
+            border-radius: 0 6px 6px 0;
+            font-size: 14px;
             color: var(--muted);
-            line-height: 1.65;
-            text-align: center;
+            line-height: 1.6;
+            margin-top: 1rem;
         }
 
-        .txn-col-body:nth-child(3),
-        .txn-col-body:last-child {
-            border-left: none;
-        }
 
         .marketplace-grid {
             display: grid;
@@ -1310,10 +1260,7 @@
             box-shadow: 0 8px 20px var(--hover-shadow);
         }
 
-        .research-method-card.highlight {
-            border-color: #A78BFA;
-            background: #FAF5FF;
-        }
+
 
         .research-method-card h4 {
             font-size: .82rem;
@@ -1322,9 +1269,7 @@
             margin-bottom: .4rem;
         }
 
-        .research-method-card.highlight h4 {
-            color: #7E22CE;
-        }
+
 
         .research-method-card p {
             font-size: .78rem;
@@ -1474,11 +1419,13 @@
             border-radius: .875rem;
             padding: 1rem 1.6rem;
             display: flex;
-            align-items: center;
+            flex-direction: column;
+            justify-content: center;
             gap: .75rem;
             min-width: 190px;
             border: 1px solid var(--border);
             text-decoration: none;
+            text-align: center;
             color: inherit;
             transition: border-color .25s, box-shadow .25s, transform .35s var(--ease-spring);
         }
@@ -1487,6 +1434,7 @@
             display: flex;
             flex-direction: column;
             justify-content: center;
+            text-align: center;
         }
 
         .c-card:hover {
@@ -1605,17 +1553,17 @@
         /* ── ABOUT ── */
         #about {
             background: var(--white);
-            padding: 5rem 6% 5rem;
+            padding: 6rem 6%;
         }
 
         /* Asymmetric hero */
         .about-hero {
             display: grid;
-            grid-template-columns: 420px 1fr;
+            grid-template-columns: 320px 1fr;
             gap: 4rem;
             align-items: center;
             max-width: 1040px;
-            margin: 0 auto 5rem;
+            margin: 0 auto 4rem;
         }
 
         .about-photo-wrap {
@@ -1632,27 +1580,27 @@
         }
 
         .about-eyebrow {
-            font-size: .62rem;
+            font-size: .65rem;
             font-weight: 700;
             letter-spacing: .14em;
             text-transform: uppercase;
             color: var(--muted);
-            margin-bottom: 1.2rem;
+            margin-bottom: 1rem;
             display: block;
             font-family: 'DM Sans', sans-serif;
         }
 
         .about-big {
             font-family: 'Playfair Display', serif;
-            font-size: clamp(2.6rem, 5vw, 4.2rem);
-            line-height: 1.0;
+            font-size: clamp(1.8rem, 3vw, 2.6rem);
+            line-height: 1.15;
             letter-spacing: -.02em;
             color: var(--navy);
-            margin-bottom: 1.4rem;
+            margin-bottom: 1rem;
         }
 
         .about-tagline {
-            font-size: .84rem;
+            font-size: .88rem;
             color: var(--muted);
             font-family: 'DM Sans', sans-serif;
             letter-spacing: .01em;
@@ -1661,7 +1609,7 @@
         /* Three-col story */
         .mag-cols {
             max-width: 1040px;
-            margin: 0 auto 4rem;
+            margin: 0 auto 3rem;
             display: grid;
             grid-template-columns: repeat(3, 1fr);
             gap: 2.5rem;
@@ -1673,25 +1621,27 @@
         }
 
         .mag-col-num {
-            font-family: 'Playfair Display', serif;
-            font-size: .75rem;
+            font-size: .72rem;
             color: var(--muted);
-            margin-bottom: .6rem;
+            margin-bottom: .5rem;
+            font-family: 'DM Sans', sans-serif;
+            font-weight: 500;
         }
 
         .mag-col-lead {
-            font-family: 'Playfair Display', serif;
-            font-size: 1rem;
-            font-style: italic;
+            font-family: 'DM Sans', sans-serif;
+            font-size: .88rem;
+            font-weight: 600;
             color: var(--navy);
-            margin-bottom: .65rem;
-            line-height: 1.4;
+            margin-bottom: .55rem;
+            line-height: 1.45;
         }
 
         .mag-col-body {
-            font-size: .84rem;
+            font-size: .82rem;
             color: var(--muted);
-            line-height: 1.85;
+            line-height: 1.8;
+            font-family: 'DM Sans', sans-serif;
         }
 
         /* Flip skill cards */
@@ -1755,7 +1705,7 @@
 
         .flip-card {
             perspective: 900px;
-            height: 190px;
+            height: 150px;
             cursor: pointer;
             opacity: 0;
         }
@@ -1844,14 +1794,8 @@
             pointer-events: none;
         }
 
-        .flip-icon {
-            font-size: 1.5rem;
-            margin-bottom: .5rem;
-            display: block;
-        }
-
         .flip-title {
-            font-size: .78rem;
+            font-size: .8rem;
             font-weight: 600;
             color: var(--navy);
             line-height: 1.35;
@@ -1860,14 +1804,14 @@
         }
 
         .flip-hint {
-            font-size: .58rem;
+            font-size: .7rem;
             color: #94A3B8;
             letter-spacing: .06em;
             font-family: 'DM Sans', sans-serif;
         }
 
         .flip-back-title {
-            font-size: .6rem;
+            font-size: .7rem;
             font-weight: 700;
             letter-spacing: .12em;
             text-transform: uppercase;
@@ -1886,7 +1830,7 @@
         }
 
         .flip-list li {
-            font-size: .76rem;
+            font-size: .8rem;
             color: rgba(255, 255, 255, .88);
             display: flex;
             align-items: center;
@@ -1977,7 +1921,7 @@
     <section id="hero">
         <div class="hero-top fi">
             <div class="hero-text">
-                <h1 id="hero-h1">Hi, I'm<br>Celine </h1>
+                <h1 id="hero-h1">Hi, I'm<br>Celine Yin</h1>
             </div>
             <div class="hero-right">
                 <p>With a hybrid background in Communication and Management Science, I explore how marketing, user
@@ -2022,12 +1966,10 @@
         <!-- Asymmetric hero: clipped photo floats left, big type right -->
         <div class="about-hero fi">
             <div class="about-photo-wrap">
-                <img src="01.PNG" alt="Celine Yin" class="about-photo">
+                <img src="03.jpg" alt="Celine Yin" class="about-photo">
             </div>
             <div class="about-hero-text">
-                <p class="about-eyebrow">Hi, a bit about me</p>
-                <h2 class="about-big">Somewhere between<br>a planner<br>and a free spirit.</h2>
-                <p class="about-tagline">Taiwan → Copenhagen → wherever next</p>
+                <h2 class="about-big">Random but Important Things</h2>
             </div>
         </div>
 
@@ -2035,23 +1977,23 @@
         <div class="mag-cols fi">
             <div class="mag-col">
                 <p class="mag-col-num">01</p>
-                <p class="mag-col-lead">I lived in Denmark for half a year.</p>
-                <p class="mag-col-body">The exchange taught me hygge before I even knew the word — slowing down, good
-                    food, candlelight, people over productivity. It changed how I think about what makes a space (and a
-                    day) actually feel good.</p>
+                <p class="mag-col-lead">Big on hygge now</p>
+                <p class="mag-col-body">Learned “hygge” during my time in Denmark — slowing down, good food,
+                    candlelight,
+                    and choosing people over productivity. It stayed with me and changed how a day feels.</p>
             </div>
             <div class="mag-col">
                 <p class="mag-col-num">02</p>
-                <p class="mag-col-lead">I'm lowkey obsessed with astrology.</p>
-                <p class="mag-col-body">Not in a "Mercury is in retrograde" way — more like I genuinely find it
-                    interesting how people use it to understand themselves. I'll ask your sign within the first ten
-                    minutes of meeting you.</p>
+                <p class="mag-col-lead">Lowkey into astrology</p>
+                <p class="mag-col-body">Fascinated by how people explore themselves with astrology.
+                    I love seeing how it can reveal little things about someone and will probably ask your sign within
+                    the first ten minutes.</p>
             </div>
             <div class="mag-col">
                 <p class="mag-col-num">03</p>
-                <p class="mag-col-lead">I say yes before I know how.</p>
-                <p class="mag-col-body">Tried pottery, solo trips, cooking from scratch, picking up new tools
-                    mid-project. I figure the best way to get good at something is to just start, then not stop.</p>
+                <p class="mag-col-lead">Full of action</p>
+                <p class="mag-col-body">Super motivated and always eager to learn new skills even if they don’t always
+                    come in handy.</p>
             </div>
         </div>
 
@@ -2061,9 +2003,7 @@
             <div class="flip-card">
                 <div class="flip-inner">
                     <div class="flip-front">
-                        <span class="flip-icon"></span>
                         <p class="flip-title">Marketing<br>&amp; Analytics</p>
-                        <span class="flip-hint">→</span>
                     </div>
                     <div class="flip-back">
                         <p class="flip-back-title">Marketing &amp; Analytics</p>
@@ -2079,9 +2019,7 @@
             <div class="flip-card">
                 <div class="flip-inner">
                     <div class="flip-front">
-                        <span class="flip-icon"></span>
                         <p class="flip-title">Design</p>
-                        <span class="flip-hint">→</span>
                     </div>
                     <div class="flip-back">
                         <p class="flip-back-title">Design</p>
@@ -2097,9 +2035,7 @@
             <div class="flip-card">
                 <div class="flip-inner">
                     <div class="flip-front">
-                        <span class="flip-icon"></span>
                         <p class="flip-title">Research</p>
-                        <span class="flip-hint">→</span>
                     </div>
                     <div class="flip-back">
                         <p class="flip-back-title">Research</p>
@@ -2115,9 +2051,7 @@
             <div class="flip-card">
                 <div class="flip-inner">
                     <div class="flip-front">
-                        <span class="flip-icon"></span>
                         <p class="flip-title">Code</p>
-                        <span class="flip-hint">→</span>
                     </div>
                     <div class="flip-back">
                         <p class="flip-back-title">Code</p>
@@ -2133,9 +2067,7 @@
             <div class="flip-card">
                 <div class="flip-inner">
                     <div class="flip-front">
-                        <span class="flip-icon"></span>
                         <p class="flip-title">Languages</p>
-                        <span class="flip-hint">→</span>
                     </div>
                     <div class="flip-back">
                         <p class="flip-back-title">Languages</p>
@@ -2197,30 +2129,30 @@
         <div class="balance-wrap">
             <div>
                 <div class="recharge-cards">
-                    <div class="recharge-card active fi" data-photo="travel" onmouseenter="showPhoto('travel',this)"
-                        onmouseleave="resetPhoto()">
+                    <div class="recharge-card active fi" data-video="travel" onmouseenter="showVideo('travel',this)"
+                        onmouseleave="resetVideo()">
                         <div class="rc-icon">✈️</div>
                         <div class="rc-body">
-                            <h4>Travel & New Places</h4>
+                            <h5>Travel & New Places</h5>
                             <p>Not really a city person. During my exchange, I visited 30+ countries — Amsterdam and
                                 Barcelona are still my favorites. Still a long bucket list ahead (Machu Picchu is high
                                 on it).</p>
                         </div>
                     </div>
-                    <div class="recharge-card fi" data-photo="reading" onmouseenter="showPhoto('reading',this)"
-                        onmouseleave="resetPhoto()">
+                    <div class="recharge-card fi" data-video="concert" onmouseenter="showVideo('concert',this)"
+                        onmouseleave="resetVideo()">
                         <div class="rc-icon">🎤</div>
                         <div class="rc-body">
-                            <h4>Live Shows & Experiences</h4>
+                            <h5>Live Shows & Experiences</h5>
                             <p>Concerts, performances, immersive experiences — anything that makes me feel present. It's
                                 one of the few things I'm always willing to spend time and money on.</p>
                         </div>
                     </div>
-                    <div class="recharge-card fi" data-photo="cooking" onmouseenter="showPhoto('cooking',this)"
-                        onmouseleave="resetPhoto()">
+                    <div class="recharge-card fi" data-video="cooking" onmouseenter="showVideo('cooking',this)"
+                        onmouseleave="resetVideo()">
                         <div class="rc-icon">🍳</div>
                         <div class="rc-body">
-                            <h4>Cooking & Mindful Eating</h4>
+                            <h5>Cooking & Mindful Eating</h5>
                             <p>This started because I bought an oven and didn't want it to go to waste. At some point I
                                 got really into making food that looks nice — like those big brunch plates.</p>
                         </div>
@@ -2228,15 +2160,15 @@
                 </div>
             </div>
             <div class="fi-r">
-                <div class="balance-photo-panel" id="bPanel">
-                    <div class="b-photo show" id="photo-travel">
-                        <div class="b-photo-bg" style="background-image:url('travel.jpg');"></div>
+                <div class="balance-video-panel" id="bPanel">
+                    <div class="b-video show" id="video-travel">
+                        <video src="travel.mp4" autoplay muted loop playsinline></video>
                     </div>
-                    <div class="b-photo" id="photo-reading">
-                        <div class="b-photo-bg" style="background-image:url('01.jpg');"></div>
+                    <div class="b-video" id="video-concert">
+                        <video src="concert.mp4" muted loop playsinline></video>
                     </div>
-                    <div class="b-photo" id="photo-cooking">
-                        <div class="b-photo-bg" style="background-image:url('cooking.jpg');"></div>
+                    <div class="b-video" id="video-cooking">
+                        <video src="cooking.mp4" muted loop playsinline></video>
                     </div>
                 </div>
             </div>
@@ -2259,7 +2191,8 @@
             <!-- MARKETING -->
             <div class="proj-card fi" data-c="marketing">
                 <div class="proj-tags"><span class="ptag ptag-blue">Production Project</span><span
-                        class="ptag ptag-sky">SaaS Marketing</span><span class="ptag ptag-green">A/B Testing</span>
+                        class="ptag ptag-sky">SaaS Marketing</span><span class="ptag ptag-green">Funnel
+                        Optimization</span>
                 </div>
                 <h2>EdgeHub SaaS — GTM Campaign & Funnel Optimization (2025)</h2>
                 <p class="proj-summary">Led a cross-channel GTM strategy for an industrial SaaS product, focusing on
@@ -2344,29 +2277,31 @@
 
             <!-- PLATFORM -->
             <div class="proj-card fi" data-c="platform">
-                <div class="proj-tags"><span class="ptag ptag-blue">Production Project</span><span
-                        class="ptag ptag-sky">SaaS Marketing</span><span class="ptag ptag-green">A/B Testing</span>
+                <div class="proj-tags"><span class="ptag ptag-blue">GTM</span><span
+                        class="ptag ptag-sky">SaaS</span><span class="ptag ptag-green">Ecosystem Strategy</span>
                 </div>
-                <h2>Advantech — Partner Program</h2>
-                <p class="proj-summary">Two parallel workstreams: designing a scalable partner ecosystem framework from
-                    scratch, and enabling Marketplace BD teams to convert technical capabilities into actionable sales
-                    motions.</p>
+                <h2>Advantech WISE — Partner Program</h2>
+                <p class="proj-summary">Designed a partner program framework by structuring ecosystem roles,
+                    defining partner progression models, and aligning enablement with go-to-market execution.</p>
                 <p class="proj-section-label">Framework Design Process</p>
                 <div class="framework-steps">
                     <div class="fw-step">
                         <div class="fw-step-num">1</div>
                         <h4>Benchmark &amp; Problem Framing</h4>
                         <ul>
-                            <li>Analysed industry partner programs (tiering, incentives, collaboration models)</li>
-                            <li>Identified gap between incentive design and actual collaboration value</li>
+                            <li>Benchmarked industry partner programs across tiering, incentives, and collaboration
+                                models</li>
+                            <li>Identified structural gaps between incentive design and actual partner engagement</li>
                         </ul>
                     </div>
                     <div class="fw-step">
                         <div class="fw-step-num">2</div>
                         <h4>Partner Mapping &amp; Segmentation</h4>
                         <ul>
-                            <li>Clarified partner roles across SI, ISV, and solution providers</li>
-                            <li>Structured existing partners into capability clusters</li>
+                            <li>Defined partner roles across SI, ISV, and solution providers based on capabilities and
+                                contribution models</li>
+                            <li>Applied the framework to existing partners to test segmentation logic and ensure role
+                                consistency</li>
                         </ul>
                     </div>
                     <div class="fw-step">
@@ -2374,21 +2309,20 @@
                         <h4>Lifecycle &amp; Progression</h4>
                         <ul>
                             <li>Designed partner growth path from entry to advanced</li>
-                            <li>Defined progression criteria and milestone system</li>
+                            <li>Established milestone-based progression criteria to guide partner development</li>
                         </ul>
                     </div>
                     <div class="fw-step">
                         <div class="fw-step-num">4</div>
                         <h4>Ecosystem Mechanism</h4>
                         <ul>
-                            <li>Built end-to-end model: Recruit → Enable → Co-sell → Scale</li>
                             <li>Connected enablement, GTM, and revenue into a unified framework</li>
                             <li>Enabled partners to scale from one-off projects to repeatable solutions</li>
                         </ul>
                     </div>
                 </div>
-                <div class="nda-note">The Partner Program is currently under development, and related details have not
-                    yet been publicly disclosed.</div>
+                <div class="nda-note">Due to confidentiality, details have been generalized to focus on methodology and
+                    framework design.</div>
 
                 <hr class="proj-sub-divider">
                 <div>
@@ -2396,41 +2330,33 @@
                             class="ptag ptag-sky">SaaS Marketing</span><span class="ptag ptag-green">A/B Testing</span>
                     </div>
                     <h2>Marketplace Sales Enablement Workshop</h2>
-                    <div class="txn-flow">
-                        <div class="txn-col-head">
-                            <div class="txn-phase">交易前</div>
-                            <div class="txn-sub">導購入口與採購加速</div>
-                        </div>
-                        <div class="txn-col-head">
-                            <div class="txn-phase">進入交易</div>
-                            <div class="txn-sub">訂單/付款/交付機制</div>
-                        </div>
-                        <div class="txn-col-head">
-                            <div class="txn-phase">交易完成後</div>
-                            <div class="txn-sub">授權管理、自助服務</div>
-                        </div>
-                        <div class="txn-col-body">Sales Resource<br>（內容與資源入口）</div>
-                        <div class="txn-col-body">Proxy Ordering<br>Self-Service Portal<br>Credits &amp;
-                            Membership<br>Payment</div>
-                        <div class="txn-col-body">License Management<br>Orders &amp; Billing<br>Team
-                            Management<br>Notifications</div>
-                    </div>
+
+                    <p class="proj-summary">Planned and executed a Marketplace sales enablement workshop, mapping
+                        platform capabilities to key stages of the sales process (e.g., discovery, solution alignment,
+                        and evaluation).
+                        Enabled BD teams to translate technical product features into actionable customer-facing sales
+                        scenarios and communication frameworks.</p>
+
                     <div class="marketplace-grid">
                         <div class="mkt-img-card">
-                            <div class="mkt-img-card-head">Sales Resource（交易前）</div>
+                            <div class="mkt-img-card-head">Sales Resource（Pre-Sales）</div>
                             <div class="mkt-img-ph">
-                                <p>Add screenshot</p>
+                                <img class="channel-img" src="after.png" alt="after">
                             </div>
                         </div>
                         <div class="mkt-img-card">
-                            <div class="mkt-img-card-head">Payment（進入交易）</div>
+                            <div class="mkt-img-card-head">Payment（Entering a deal）</div>
                             <div class="mkt-img-ph">
-                                <p>Add screenshot</p>
+                                <img class="channel-img" src="after.png" alt="after">
                             </div>
                         </div>
                     </div>
+                    <div class="nda-note1">Selected slides illustrating how platform capabilities were translated
+                        into structured sales scenarios.</div>
                 </div>
             </div>
+
+
 
             <!-- UX -->
             <div class="proj-card fi" data-c="ux">
@@ -2471,7 +2397,7 @@
                             <p class="pn-sub">High-fidelity prototype</p>
                         </div>
                     </div>
-                    <div class="ux-role-badge">Primary responsibilities: <strong>Project management, Emergency sound
+                    <div class="ux-role-badge">Primary responsibilities : <strong> Project management, Emergency sound
                             recognition system design</strong></div>
                     <p class="proj-section-label">Design Process</p>
                     <div class="design-stages">
@@ -2505,19 +2431,19 @@
                         <div class="ux-img-card">
                             <div class="ux-img-head">Affinity Mapping</div>
                             <div class="ux-img-ph" style="aspect-ratio:4/3;">
-                                <p>Add screenshot</p>
+                                <img src="Prototypes.png">
                             </div>
                         </div>
                         <div class="ux-img-card">
                             <div class="ux-img-head">Wireframes</div>
                             <div class="ux-img-ph" style="aspect-ratio:4/3;">
-                                <p>Add screenshot</p>
+                                <img src="Prototypes.png">
                             </div>
                         </div>
                         <div class="ux-img-card">
                             <div class="ux-img-head">High-Fidelity Prototype</div>
                             <div class="ux-img-ph" style="aspect-ratio:4/3;">
-                                <p>Add screenshot</p>
+                                <img src="Prototypes.png">
                             </div>
                         </div>
                     </div>
@@ -2525,7 +2451,8 @@
                 <hr class="proj-sub-divider">
                 <div class="ux-proj">
                     <div class="proj-tags"><span class="ptag ptag-blue">Production Project</span><span
-                            class="ptag ptag-sky">SaaS Marketing</span><span class="ptag ptag-green">A/B Testing</span>
+                            class="ptag ptag-sky">SaaS Marketing</span><span class="ptag ptag-green">User Interface
+                            Design</span>
                     </div>
                     <h2>Advantech Marketplace — Website Content Optimisation</h2>
                     <p class="ux-summary">Supported the content restructuring and layout optimisation of Marketplace
@@ -2552,36 +2479,39 @@
                         <div class="ux-img-card">
                             <div class="ux-img-head">Component — FAQ</div>
                             <div class="ux-img-ph" style="aspect-ratio:16/9;">
-                                <p>Add screenshot</p>
+                                <img class="channel-img" src="after.png" alt="after">
                             </div>
                         </div>
                         <div class="ux-img-card">
                             <div class="ux-img-head">Component — Hero Banner</div>
                             <div class="ux-img-ph" style="aspect-ratio:16/9;">
-                                <p>Add screenshot</p>
+                                <img class="channel-img" src="after.png" alt="after">
                             </div>
                         </div>
                         <div class="ux-img-card">
                             <div class="ux-img-head">View All Pages — Layout Template</div>
                             <div class="ux-img-ph" style="aspect-ratio:16/9;">
-                                <p>Add screenshot</p>
+                                <img class="channel-img" src="after.png" alt="after">
                             </div>
                         </div>
                         <div class="ux-img-card">
                             <div class="ux-img-head">Component — Video</div>
                             <div class="ux-img-ph" style="aspect-ratio:16/9;">
-                                <p>Add screenshot</p>
+                                <img class="channel-img" src="after.png" alt="after">
                             </div>
                         </div>
                     </div>
+                    <div class="nda-note1">Selected slides illustrating how platform capabilities were translated
+                        into structured sales scenarios.</div>
                 </div>
             </div>
 
             <!-- DATA -->
             <div class="proj-card fi" data-c="data">
                 <div class="ux-proj">
-                    <div class="proj-tags"><span class="ptag ptag-blue">Data</span><span class="ptag ptag-sky">UX
-                            Research</span><span class="ptag ptag-orange">2023</span></div>
+                    <div class="proj-tags"><span class="ptag ptag-blue">Data</span><span class="ptag ptag-sky">Academic
+                            Research
+                        </span></div>
                     <h2>Amazon Go — Consumer Perception of Unmanned Retail</h2>
                     <p class="ux-summary">Using Amazon Go's cashierless model as the core case, this study explored how
                         emerging technology influences consumer behaviour and analysed what the rise of AI retail means
@@ -2620,7 +2550,7 @@
                 <hr class="proj-sub-divider">
                 <div class="ux-proj">
                     <div class="proj-tags"><span class="ptag ptag-blue">Data</span><span class="ptag ptag-sky">Academic
-                            Research</span><span class="ptag ptag-orange">2023</span></div>
+                            Research</span></div>
                     <h2>Social Media Usage &amp; Anxiety — A Cross-Platform Correlation Study</h2>
                     <p class="ux-summary">A four-person group study examining the relationship between social media
                         usage and different types of anxiety among youth aged 16–24 across Instagram, Dcard, and
@@ -2645,7 +2575,7 @@
                             <p>441 online surveys using a 7-point Likert scale to measure anxiety levels. Analysed the
                                 correlation between usage time and average anxiety scores across platforms.</p>
                         </div>
-                        <div class="research-method-card highlight">
+                        <div class="research-method-card">
                             <h4>In-depth Interviews</h4>
                             <p>Conducted in-depth interviews with users who simultaneously use all three platforms.
                                 Applied grounded theory to explore the connection between platform usage and anxiety.
@@ -2654,10 +2584,10 @@
                     </div>
                     <div class="platform-tags">
                         <div class="platform-tag">
-                            <div class="pt-dot" style="background:#E1306C;"></div>Instagram
+                            <div class="pt-dot" style="background:#711ca7;"></div>Instagram
                         </div>
                         <div class="platform-tag">
-                            <div class="pt-dot" style="background:#00B050;"></div>Dcard
+                            <div class="pt-dot" style="background:#3b7be3;"></div>Dcard
                         </div>
                         <div class="platform-tag">
                             <div class="pt-dot" style="background:#FE2C55;"></div>Xiaohongshu
@@ -2688,15 +2618,15 @@
         <div class="s-line fi"></div>
         <p class="s-sub fi">Now we're basically friends and that means we should connect</p>
         <div class="contact-row fi">
-            <a href="/cdn-cgi/l/email-protection#e88b8d8481868d918186d1d9a88f85898184c68b8785" class="c-card">
+            <a href="mailto:celineyin91@gmail.com" class="c-card">
                 <div><small>Email</small><span><span class="__cf_email__"
-                            data-cfemail="a4c7c1c8cdcac1ddcdca9d95e4c3c9c5cdc88ac7cbc9">[email&#160;protected]</span></span>
+                            data-cfemail="mailtocelineyin91@gmail.com">celineyin91@gmail.com</span></span>
                 </div>
             </a>
             <a href="tel:+886966767886" class="c-card">
                 <div><small>Phone</small><span>+886 966 767 886</span></div>
             </a>
-            <a href="#" class="c-card">
+            <a href="https://www.linkedin.com/in/celine-yin-2757a735a/" class="c-card">
                 <div><small>LinkedIn</small><span>Celine Yin</span></div>
             </a>
         </div>
@@ -2785,20 +2715,35 @@
             setTimeout(() => { el.querySelectorAll('.funnel-stage').forEach(s => s.classList.add('show')); }, 500);
         })();
 
-        /* ── Hobby photo switcher with ken-burns ── */
+        /* ── Hobby video switcher ── */
         let cur = 'travel';
-        function showPhoto(id, el) {
-            document.querySelectorAll('.b-photo').forEach(p => p.classList.remove('show'));
+        function showVideo(id, el) {
+            document.querySelectorAll('.b-video').forEach(v => {
+                v.classList.remove('show');
+                v.querySelector('video')?.pause();
+            });
             document.querySelectorAll('.recharge-card').forEach(c => c.classList.remove('active'));
-            document.getElementById('photo-' + id)?.classList.add('show');
-            el?.classList.add('active'); cur = id;
+            const panel = document.getElementById('video-' + id);
+            if (panel) {
+                panel.classList.add('show');
+                const vid = panel.querySelector('video');
+                if (vid) { vid.currentTime = 0; vid.play(); }
+            }
+            el?.classList.add('active');
+            cur = id;
         }
-        function resetPhoto() {
-            document.querySelectorAll('.b-photo').forEach(p => p.classList.remove('show'));
+        function resetVideo() {
+            // keep current playing, just update active card highlight
             document.querySelectorAll('.recharge-card').forEach(c => c.classList.remove('active'));
-            document.getElementById('photo-' + cur)?.classList.add('show');
-            document.querySelectorAll('.recharge-card').forEach(c => { if (c.dataset.photo === cur) c.classList.add('active'); });
+            document.querySelectorAll('.recharge-card').forEach(c => {
+                if (c.dataset.video === cur) c.classList.add('active');
+            });
         }
+        // autoplay first video on load
+        document.addEventListener('DOMContentLoaded', () => {
+            const first = document.querySelector('#video-travel video');
+            if (first) first.play().catch(() => { });
+        });
 
         /* ── 3-D tilt on thought visual ── */
         const tilt = document.getElementById('tiltImg');
@@ -2813,44 +2758,25 @@
         }
     </script>
 
-
-
-
-    <!-- Chart.js (貼在 </body> 前) -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
     <script>
-        new Chart(document.getElementById('amazonChart'), {
+        amazonChart = new Chart(document.getElementById('amazonChart'), {
             type: 'bar',
             data: {
                 labels: ['Personal data & privacy', 'Billing errors', 'In-store crowd control', 'Sensor interference', 'Preference for traditional...', 'Other'],
-                datasets: [{
-                    data: [63.4, 45.1, 39, 40.2, 15.9, 1.2],
-                    backgroundColor: ['#050041', '#1D4ED8', '#1D4ED8', '#1D4ED8', '#93C5FD', '#CBD5E1'],
-                    borderRadius: 4,
-                    borderSkipped: false,
-                }]
+                datasets: [{ data: [63.4, 45.1, 39, 40.2, 15.9, 1.2], backgroundColor: ['#050041', '#1D4ED8', '#1D4ED8', '#1D4ED8', '#93C5FD', '#CBD5E1'], borderRadius: 4, borderSkipped: false }]
             },
             options: {
-                indexAxis: 'y',
-                responsive: true,
-                maintainAspectRatio: false,
-                plugins: {
-                    legend: { display: false },
-                    tooltip: { callbacks: { label: ctx => ' ' + ctx.raw + '%' } }
-                },
+                indexAxis: 'y', responsive: true, maintainAspectRatio: false,
+                animation: { duration: 1000, easing: 'easeOutQuart' },
+                plugins: { legend: { display: false }, tooltip: { callbacks: { label: ctx => ' ' + ctx.raw + '%' } } },
                 scales: {
-                    x: {
-                        max: 100,
-                        ticks: { callback: v => v + '%', font: { size: 10 }, color: '#94A3B8' },
-                        grid: { color: '#F1F5F9' },
-                        border: { display: false }
-                    },
-                    y: {
-                        ticks: { font: { size: 10 }, color: '#64748B' },
-                        grid: { display: false },
-                        border: { display: false }
-                    }
+                    x: { max: 100, ticks: { callback: v => v + '%', font: { size: 10 }, color: '#94A3B8' }, grid: { color: '#F1F5F9' }, border: { display: false } },
+                    y: { ticks: { font: { size: 10 }, color: '#64748B' }, grid: { display: false }, border: { display: false } }
                 }
             }
         });
     </script>
+</body>
+
+</html>

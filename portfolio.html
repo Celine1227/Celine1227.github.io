@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Celine Yin — Marketing & Strategy</title>
+    <title>Celine Yin — Strategy & Product</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link
         href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=DM+Serif+Display:ital@0;1&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600&display=swap"
@@ -122,6 +122,15 @@
 
         .nav-links a:hover::after {
             width: 100%;
+        }
+
+        .nav-links a.active-link {
+            color: var(--navy);
+        }
+
+        .nav-links a.active-link::after {
+            width: 100%;
+            background: var(--navy);
         }
 
         /* ── HERO ── */
@@ -423,104 +432,6 @@
             line-height: 1.55;
         }
 
-        /* ── HOBBY ── */
-        #balance {
-            background: var(--white);
-        }
-
-        .balance-wrap {
-            display: grid;
-            grid-template-columns: 1fr 300px;
-            gap: 2rem;
-            max-width: 1040px;
-            margin: 0 auto;
-            align-items: start;
-        }
-
-        .recharge-cards {
-            display: flex;
-            flex-direction: column;
-            gap: .85rem;
-        }
-
-        .recharge-card {
-            display: flex;
-            gap: 1rem;
-            align-items: flex-start;
-            padding: 1rem 1.2rem;
-            border-radius: 1rem;
-            background: var(--bg);
-            border: 2px solid transparent;
-            cursor: pointer;
-            transition: all .3s var(--ease-out);
-        }
-
-        .recharge-card:hover,
-        .recharge-card.active {
-            background: white;
-            border-color: var(--hover-border);
-            box-shadow: 0 8px 24px var(--hover-shadow);
-            transform: translateX(7px);
-        }
-
-        .recharge-card.active {
-            border-color: var(--hover-border);
-        }
-
-        .recharge-card:hover .rc-icon,
-        .recharge-card.active .rc-icon {
-            transform: scale(1.22) rotate(-6deg);
-        }
-
-        .rc-icon {
-            font-size: 1.3rem;
-            flex-shrink: 0;
-            transition: transform .35s var(--ease-spring);
-        }
-
-        .rc-body h4 {
-            font-size: .88rem;
-            font-weight: 600;
-            margin-bottom: .15rem;
-            color: var(--navy);
-        }
-
-        .rc-body p {
-            font-size: .78rem;
-            color: var(--muted);
-            line-height: 1.5;
-        }
-
-        .balance-video-panel {
-            position: sticky;
-            top: 7rem;
-            border-radius: 1.75rem;
-            overflow: hidden;
-            box-shadow: 0 20px 50px rgba(0, 0, 0, .12);
-            aspect-ratio: 9/16;
-            max-height: 75vh;
-            border: 1px solid var(--border);
-            background: #000;
-        }
-
-        .b-video {
-            position: absolute;
-            inset: 0;
-            opacity: 0;
-            transition: opacity .45s var(--ease-out);
-        }
-
-        .b-video.show {
-            opacity: 1;
-        }
-
-        .b-video video {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            display: block;
-        }
-
         /* ── PROJECTS ── */
         #projects {
             background: var(--bg);
@@ -617,24 +528,12 @@
             color: #15803D;
         }
 
-        .ptag-orange {
-            background: #FFF7ED;
-            color: #C2410C;
-        }
-
         .ptag-sky {
             background: #F0F9FF;
             color: #0369A1;
         }
 
         .proj-card h2 {
-            font-size: 1.05rem;
-            font-weight: 700;
-            margin-bottom: .4rem;
-            color: var(--navy);
-        }
-
-        .proj-card h3 {
             font-size: 1.05rem;
             font-weight: 700;
             margin-bottom: .4rem;
@@ -671,18 +570,11 @@
             margin: 2.5rem 0;
         }
 
-        .funnel-wrap {
-            display: grid;
-            grid-template-columns: 1fr 220px;
-            gap: 2rem;
-            align-items: start;
-            margin-bottom: 1rem;
-        }
-
         .funnel-table {
             width: 100%;
             border-collapse: collapse;
             font-size: .8rem;
+            margin-bottom: 1rem;
         }
 
         .funnel-table th {
@@ -707,6 +599,7 @@
             color: var(--muted);
             vertical-align: middle;
             transition: background .15s;
+            position: relative;
         }
 
         .funnel-table td:not(:first-child) {
@@ -718,54 +611,31 @@
             color: var(--navy);
         }
 
-        .funnel-table .note {
-            font-size: .72rem;
-        }
-
         .funnel-table tr:hover td {
             background: rgba(211, 211, 211, .2);
         }
 
-        .funnel-visual {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 3px;
+        .funnel-bar-track {
+            position: absolute;
+            left: 8px;
+            right: 8px;
+            bottom: 3px;
+            height: 3px;
+            border-radius: 2px;
+            background: var(--border);
+            overflow: hidden;
         }
 
-        .funnel-stage {
-            border-radius: 6px;
-            padding: 7px 12px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            transform: scaleX(.5) translateX(-20px);
-            opacity: 0;
-            transition: transform .5s var(--ease-spring), opacity .5s var(--ease-out);
+        .funnel-bar-fill {
+            height: 100%;
+            width: 0%;
+            border-radius: 2px;
+            background: linear-gradient(90deg, var(--blue-mid), var(--navy));
+            transition: width 1s var(--ease-out);
         }
 
-        .funnel-stage.show {
-            transform: scaleX(1) translateX(0);
-            opacity: 1;
-        }
-
-        .funnel-stage span {
-            font-size: .75rem;
-            font-weight: 600;
-            color: white;
-        }
-
-        .funnel-stage small {
-            font-size: .68rem;
-            color: rgba(255, 255, 255, .75);
-        }
-
-        .funnel-arrow {
-            width: 0;
-            height: 0;
-            border-left: 7px solid transparent;
-            border-right: 7px solid transparent;
-            border-top: 6px solid var(--border);
+        .funnel-bar-fill.show {
+            width: var(--fill, 0%);
         }
 
         .proj-insight {
@@ -783,43 +653,6 @@
             font-weight: 600;
         }
 
-        .channel-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 1rem;
-        }
-
-        .channel-card {
-            border: 1.5px solid var(--border);
-            border-radius: 1rem;
-            overflow: hidden;
-            transition: border-color .2s, box-shadow .2s, transform .35s var(--ease-spring);
-        }
-
-        .channel-card:hover {
-            border-color: var(--hover-border);
-            box-shadow: 0 10px 28px var(--hover-shadow);
-            transform: translateY(-5px);
-        }
-
-        .channel-card-head {
-            background: var(--bg);
-            padding: .55rem 1rem;
-            border-bottom: 1px solid var(--border);
-            font-size: .75rem;
-            font-weight: 600;
-            text-align: center;
-            color: var(--navy);
-        }
-
-        .channel-img-ph {
-            width: 100%;
-            overflow: hidden;
-            background: var(--bg);
-        }
-
-
-
         .channel-img {
             width: 100%;
             height: 100%;
@@ -827,17 +660,6 @@
             object-fit: contain;
             display: block;
             transition: transform .4s var(--ease-out);
-        }
-
-        .channel-card:hover .channel-img {
-            transform: scale(1.05);
-        }
-
-        .channel-card-body {
-            padding: .7rem 1rem;
-            font-size: .75rem;
-            color: var(--muted);
-            line-height: 1.55;
         }
 
         .framework-steps {
@@ -948,13 +770,6 @@
             justify-content: center;
         }
 
-        .mkt-img-ph p {
-            font-size: 11px;
-            color: var(--muted);
-            text-align: center;
-            line-height: 1.5;
-        }
-
         .ux-proj {
             margin-bottom: 0;
         }
@@ -965,12 +780,6 @@
             line-height: 1.75;
             max-width: 700px;
             margin-bottom: 1.2rem;
-        }
-
-        .ux-summary a {
-            color: var(--blue);
-            font-weight: 600;
-            text-decoration: none;
         }
 
         .process-row {
@@ -989,11 +798,6 @@
             background: transparent;
         }
 
-        .process-node.active {
-            background: transparent;
-            border: none;
-        }
-
         .pn-title {
             font-size: .78rem;
             font-weight: 700;
@@ -1001,18 +805,10 @@
             margin: 0;
         }
 
-        .process-node.active .pn-title {
-            color: var(--navy);
-        }
-
         .pn-sub {
             font-size: .7rem;
             color: var(--muted);
             margin: .15rem 0 0;
-        }
-
-        .process-node.active .pn-sub {
-            color: var(--muted);
         }
 
         .process-step-num {
@@ -1027,10 +823,6 @@
             line-height: 20px;
             text-align: center;
             margin-bottom: .35rem;
-        }
-
-        .process-node.active .process-step-num {
-            background: var(--navy);
         }
 
         .process-arrow {
@@ -1138,24 +930,6 @@
             color: var(--blue);
         }
 
-        .ux-insight {
-            padding: .8rem 1rem;
-            border-radius: 8px;
-            border-left: 3px solid var(--border);
-            background: var(--bg);
-            font-size: .78rem;
-            color: var(--muted);
-            line-height: 1.65;
-            margin-bottom: .75rem;
-        }
-
-        .ux-insight.blue {
-            background: var(--blue-light);
-            border-left-color: var(--blue);
-            color: var(--blue);
-            font-weight: 500;
-        }
-
         .ux-bullets {
             padding: .85rem 1rem;
             background: var(--bg);
@@ -1199,12 +973,6 @@
             gap: .8rem;
         }
 
-        .ux-img-grid-2 {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: .8rem;
-        }
-
         .ux-img-card {
             border: 1px solid var(--border);
             border-radius: 10px;
@@ -1236,13 +1004,6 @@
 
         }
 
-        .ux-img-ph p {
-            font-size: 10.5px;
-            color: var(--muted);
-            text-align: center;
-            line-height: 1.5;
-        }
-
         .research-methods-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
@@ -1263,8 +1024,6 @@
             box-shadow: 0 8px 20px var(--hover-shadow);
         }
 
-
-
         .research-method-card h4 {
             font-size: .82rem;
             font-weight: 700;
@@ -1272,18 +1031,11 @@
             margin-bottom: .4rem;
         }
 
-
-
         .research-method-card p {
             font-size: .78rem;
             color: var(--muted);
             line-height: 1.65;
             margin: 0;
-        }
-
-        .research-method-card.highlight p {
-            color: #7E22CE;
-            opacity: .85;
         }
 
         .stat-cards {
@@ -1451,6 +1203,7 @@
             color: var(--muted);
             display: block;
             margin-bottom: .1rem;
+            transition: color .2s;
         }
 
         .c-card span {
@@ -1582,17 +1335,6 @@
             display: block;
         }
 
-        .about-eyebrow {
-            font-size: .65rem;
-            font-weight: 700;
-            letter-spacing: .14em;
-            text-transform: uppercase;
-            color: var(--muted);
-            margin-bottom: 1rem;
-            display: block;
-            font-family: 'DM Sans', sans-serif;
-        }
-
         .about-big {
             font-family: 'Playfair Display', serif;
             font-size: clamp(1.8rem, 3vw, 2.6rem);
@@ -1600,13 +1342,6 @@
             letter-spacing: -.02em;
             color: var(--navy);
             margin-bottom: 1rem;
-        }
-
-        .about-tagline {
-            font-size: .88rem;
-            color: var(--muted);
-            font-family: 'DM Sans', sans-serif;
-            letter-spacing: .01em;
         }
 
         /* Three-col story */
@@ -1660,22 +1395,6 @@
             }
         }
 
-        @keyframes iconBounce {
-
-            0%,
-            100% {
-                transform: translateY(0)
-            }
-
-            40% {
-                transform: translateY(-6px)
-            }
-
-            70% {
-                transform: translateY(-2px)
-            }
-        }
-
         @keyframes shimmer {
             0% {
                 background-position: 200% center
@@ -1683,18 +1402,6 @@
 
             100% {
                 background-position: -200% center
-            }
-        }
-
-        @keyframes listIn {
-            from {
-                opacity: 0;
-                transform: translateX(-8px)
-            }
-
-            to {
-                opacity: 1;
-                transform: none
             }
         }
 
@@ -1749,10 +1456,6 @@
             transform: rotateY(180deg);
         }
 
-        .flip-card:hover .flip-icon {
-            animation: iconBounce .5s var(--ease-spring);
-        }
-
         .flip-front,
         .flip-back {
             position: absolute;
@@ -1803,13 +1506,6 @@
             color: var(--navy);
             line-height: 1.35;
             margin-bottom: .35rem;
-            font-family: 'DM Sans', sans-serif;
-        }
-
-        .flip-hint {
-            font-size: .7rem;
-            color: #94A3B8;
-            letter-spacing: .06em;
             font-family: 'DM Sans', sans-serif;
         }
 
@@ -1877,8 +1573,7 @@
         @media(max-width:820px) {
 
             .hero-top,
-            .thought-hero,
-            .balance-wrap {
+            .thought-hero {
                 grid-template-columns: 1fr;
             }
 
@@ -1897,10 +1592,6 @@
 
             .stat-cards {
                 grid-template-columns: repeat(2, 1fr);
-            }
-
-            .funnel-wrap {
-                grid-template-columns: 1fr;
             }
 
         }
@@ -1927,8 +1618,8 @@
                 <h1 id="hero-h1">Hi, I'm<br>Celine Yin</h1>
             </div>
             <div class="hero-right">
-                <p>With a hybrid background in Communication and Management Science, I explore how marketing, user
-                    insights, and technology come together to create meaningful experiences.</p>
+                <p>Currently pursuing an MBA at National Chengchi University (NCCU) and working as a
+                    Partner Strategy Intern at Advantech. </p>
                 <a href="#projects">Things I've Built →</a>
             </div>
         </div>
@@ -1969,7 +1660,7 @@
         <!-- Asymmetric hero: clipped photo floats left, big type right -->
         <div class="about-hero fi">
             <div class="about-photo-wrap">
-                <img src="03.png" alt="Celine Yin" class="about-photo">
+                <img src="03.jpg" alt="Celine Yin" class="about-photo">
             </div>
             <div class="about-hero-text">
                 <h2 class="about-big">Random but Important Things</h2>
@@ -1980,22 +1671,22 @@
         <div class="mag-cols fi">
             <div class="mag-col">
                 <p class="mag-col-num">01</p>
-                <p class="mag-col-lead">Big on hygge now</p>
-                <p class="mag-col-body">Learned “hygge” during my time in Denmark — slowing down, good food,
-                    candlelight,
-                    and choosing people over productivity. It stayed with me and changed how a day feels.</p>
+                <p class="mag-col-lead">My Superpower Is Handling Travel Chaos</p>
+                <p class="mag-col-body">Some of my favorite travel stories are about what went wrong along the way.
+                    Somehow,
+                    I'm usually pretty good at figuring things out.</p>
             </div>
             <div class="mag-col">
                 <p class="mag-col-num">02</p>
-                <p class="mag-col-lead">Lowkey into astrology</p>
-                <p class="mag-col-body">Fascinated by how people explore themselves with astrology.
-                    I love seeing how it can reveal little things about someone and will probably ask your sign within
-                    the first ten minutes.</p>
+                <p class="mag-col-lead"> Cooking & Mindful Eating</p>
+                <p class="mag-col-body">I really enjoy cooking, especially when I can make something both tasty and
+                    good-looking.
+                    Most importantly, I love feeding my friends.</p>
             </div>
             <div class="mag-col">
                 <p class="mag-col-num">03</p>
                 <p class="mag-col-lead">Full of action</p>
-                <p class="mag-col-body">Super motivated and always eager to learn new skills even if they don’t always
+                <p class="mag-col-body">Super motivated and always eager to learn new skills even if they don't always
                     come in handy.</p>
             </div>
         </div>
@@ -2006,10 +1697,10 @@
             <div class="flip-card">
                 <div class="flip-inner">
                     <div class="flip-front">
-                        <p class="flip-title">Marketing<br>&amp; Analytics</p>
+                        <p class="flip-title">Strategy & Analytics</p>
                     </div>
                     <div class="flip-back">
-                        <p class="flip-back-title">Marketing &amp; Analytics</p>
+                        <p class="flip-back-title">Strategy & Analytics</p>
                         <ul class="flip-list">
                             <li>Google Analytics</li>
                             <li>Funnel Analysis</li>
@@ -2022,14 +1713,13 @@
             <div class="flip-card">
                 <div class="flip-inner">
                     <div class="flip-front">
-                        <p class="flip-title">Design</p>
+                        <p class="flip-title">Design & Code</p>
                     </div>
                     <div class="flip-back">
-                        <p class="flip-back-title">Design</p>
+                        <p class="flip-back-title">Design & Code</p>
                         <ul class="flip-list">
-                            <li>Figma</li>
-                            <li>Wireframing</li>
-                            <li>Prototyping</li>
+                            <li>Figma Prototyping</li>
+                            <li>HTML, CSS, JavaScript</li>
                         </ul>
                     </div>
                 </div>
@@ -2054,14 +1744,13 @@
             <div class="flip-card">
                 <div class="flip-inner">
                     <div class="flip-front">
-                        <p class="flip-title">Code</p>
+                        <p class="flip-title">Project Management</p>
                     </div>
                     <div class="flip-back">
-                        <p class="flip-back-title">Code</p>
+                        <p class="flip-back-title">Project Management</p>
                         <ul class="flip-list">
-                            <li>HTML</li>
-                            <li>CSS</li>
-                            <li>JavaScript</li>
+                            <li>Agile / Scrum</li>
+                            <li>Project Workflows</li>
                         </ul>
                     </div>
                 </div>
@@ -2090,199 +1779,150 @@
     <section id="thought">
         <div class="thought-hero">
             <div class="thought-visual fi-l" id="tiltImg">
-                <img src="02.png" alt="">
+                <img src="02.jpg" alt="">
             </div>
             <div class="thought-text fi-r">
-                <h2>How I Approach Questions</h2>
-                <p class="lead">My way of turning fuzzy questions into thinking.</p>
+                <h2>How I Deal with Ambiguity</h2>
+                <p class="lead">My way of turning fuzzy questions into concrete progress.</p>
             </div>
         </div>
         <div class="thought-steps stagger">
             <div class="t-step">
                 <div class="t-num">1</div>
                 <div class="t-icon">🔍</div>
-                <h4>Observe First</h4>
-                <p>Start by collecting signals — what data shows and what the context looks like.</p>
+                <h4>Observe & Clarify</h4>
+                <p>Start by collecting signals — what the data shows, and what each stakeholder actually means,
+                    especially when their inputs don't line up.</p>
             </div>
             <div class="t-step">
                 <div class="t-num">2</div>
                 <div class="t-icon">⚙️</div>
-                <h4>Structure the Question</h4>
-                <p>Break the problem down by outlining options and weighing the trade-offs.</p>
+                <h4>Structure the Problem</h4>
+                <p>Break it down by outlining options, weighing trade-offs, and turning scattered input into a clear
+                    spec or set of next steps.</p>
             </div>
             <div class="t-step">
                 <div class="t-num">3</div>
                 <div class="t-icon">🤖</div>
-                <h4>Challenge My Thinking</h4>
-                <p>Test assumptions by asking AI to argue the opposite side.</p>
+                <h4>Challenge & Close Gaps</h4>
+                <p>Test assumptions by asking AI to argue the opposite side and when I hit something I don't know, I go
+                    find the people or resources to close that gap myself.</p>
             </div>
             <div class="t-step">
                 <div class="t-num">4</div>
                 <div class="t-icon">😎</div>
-                <h4>Plan, Then Stay Flexible</h4>
-                <p>I tend to be a planner, so I can stay flexible when things actually happen.</p>
+                <h4>Draft, Then Stay Flexible</h4>
+                <p>I'd rather ship an early version and let real feedback tell me what needs more digging, than
+                    over-research before showing anything</p>
             </div>
         </div>
     </section>
 
-    <!-- HOBBY -->
-    <section id="balance">
-        <h2 class="s-title fi">My Hobby</h2>
-        <div class="s-line fi"></div>
-        <div class="balance-wrap">
-            <div>
-                <div class="recharge-cards">
-                    <div class="recharge-card active fi" data-video="travel" onmouseenter="showVideo('travel',this)"
-                        onmouseleave="resetVideo()">
-                        <div class="rc-icon">✈️</div>
-                        <div class="rc-body">
-                            <h5>Travel & New Places</h5>
-                            <p>I love traveling and discovering new places. While I’m not much of a city person, I visited over 20 countries during my exchange, and Amsterdam and Barcelona are still my favorites. 
-                                There’s still a long bucket list ahead—Machu Picchu is definitely high on it.</p>
-                        </div>
-                    </div>
-                    <div class="recharge-card fi" data-video="concert" onmouseenter="showVideo('concert',this)"
-                        onmouseleave="resetVideo()">
-                        <div class="rc-icon">🎤</div>
-                        <div class="rc-body">
-                            <h5>Live Shows & Experiences</h5>
-                            <p>I also enjoy live shows and immersive experiences. Concerts, performances, anything that makes me feel fully present and these are some of the few things I’m always willing to invest my time and energy in.</p>
-                        </div>
-                    </div>
-                    <div class="recharge-card fi" data-video="cooking" onmouseenter="showVideo('cooking',this)"
-                        onmouseleave="resetVideo()">
-                        <div class="rc-icon">🍳</div>
-                        <div class="rc-body">
-                            <h5>Cooking & Mindful Eating</h5>
-                            <p>Cooking and mindful eating have become passions of mine as well. It started when I bought an oven and didn’t want it to go to waste, but I eventually got into making dishes that look as good as they taste,and it’s become a way to slow down and enjoy life.</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="fi-r">
-                <div class="balance-video-panel" id="bPanel">
-                    <div class="b-video show" id="video-travel">
-                        <video src="travel.mp4" autoplay muted loop playsinline></video>
-                    </div>
-                    <div class="b-video" id="video-concert">
-                        <video src="concert.mp4" muted loop playsinline></video>
-                    </div>
-                    <div class="b-video" id="video-cooking">
-                        <video src="cooking.mp4" muted loop playsinline></video>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
 
     <!-- PROJECTS -->
     <section id="projects">
         <h2 class="s-title fi">Things I've Built</h2>
         <div class="s-line fi"></div>
         <div class="filter-row fi">
-            <button class="ftab active" onclick="filterP('marketing',this)">Product Marketing</button>
-            <button class="ftab" onclick="filterP('platform',this)">Platform</button>
-            <button class="ftab" onclick="filterP('ux',this)">UX/UI Design</button>
-            <button class="ftab" onclick="filterP('data',this)">Data</button>
+            <button class="ftab active" onclick="filterP('marketing',this)">Product</button>
+            <button class="ftab" onclick="filterP('platform',this)">Platform & Ecosystem </button>
+            <button class="ftab" onclick="filterP('ux',this)">UX / UI Design</button>
+            <button class="ftab" onclick="filterP('data',this)">Research</button>
         </div>
 
         <div class="proj-list" id="pl">
 
             <!-- MARKETING -->
             <div class="proj-card fi" data-c="marketing">
-                <div class="proj-tags"><span class="ptag ptag-blue">Production Project</span><span
-                        class="ptag ptag-sky">SaaS Marketing</span><span class="ptag ptag-green">Funnel
-                        Optimization</span>
+                <div class="proj-tags"><span class="ptag ptag-blue">Product Marketing</span><span
+                        class="ptag ptag-green">Product Strategy</span>
                 </div>
-                <h2>EdgeHub SaaS — GTM Campaign & Funnel Optimization (2025)</h2>
-                <p class="proj-summary">Led a cross-channel GTM strategy for an industrial SaaS product, focusing on
-                    full-funnel performance. Identified that feature-driven messaging limited impact to upper funnel
-                    stages, and shifted communication toward user concerns such as security and onboarding risk. This
-                    change contributed to an <strong>11% increase in device registrations.</strong></p>
+                <h2>EdgeHub — Product Strategy & Growth (2025)</h2>
+                <p class="proj-summary">Lead growth strategy for <a
+                        href="https://wise.advantech.com/en-int/products/advantech.edgehub" target="_blank"
+                        rel="noopener">EdgeHub</a> over a 5-month cycle. Repositioned the narrative around user concerns
+                    (security and onboarding risk) and tracked performance across the funnel — generating <strong><span
+                            class="count-up" data-target="185">0</span> sales-qualified leads</strong> and
+                    <strong><span class="count-up" data-target="11" data-suffix="%">0%</span> growth in device
+                        registrations</strong> among inactive tenants.
+                </p>
 
                 <p class="proj-section-label">Funnel Performance</p>
-                <div class="funnel-wrap">
-                    <table class="funnel-table">
-                        <thead>
-                            <tr>
-                                <th>Metric</th>
-                                <th>EdgeHub</th>
-                                <th>B2B SaaS avg</th>
-                                <th>Note</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td>Awareness → Interest</td>
-                                <td class="val">~74%</td>
-                                <td>40–70%</td>
-                                <td class="note">Above benchmark</td>
-                            </tr>
-                            <tr>
-                                <td>Social CTR (video)</td>
-                                <td class="val">1.6–3.0%</td>
-                                <td>1–2%</td>
-                                <td class="note">Consistently above avg</td>
-                            </tr>
-                            <tr>
-                                <td>LinkedIn engagement</td>
-                                <td class="val">2.8–5%+</td>
-                                <td>1–2%</td>
-                                <td class="note">Content quality above sector</td>
-                            </tr>
-                            <tr>
-                                <td>eDM open rate</td>
-                                <td class="val">25.4%</td>
-                                <td>18–22%</td>
-                                <td class="note">Above average</td>
-                            </tr>
-                            <tr>
-                                <td>Interest → MQL</td>
-                                <td class="val">~0.08%</td>
-                                <td>0.05–0.2%</td>
-                                <td class="note">Typical industrial SaaS</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                    <div class="funnel-visual" id="funnelViz"></div>
-                </div>
+                <table class="funnel-table">
+                    <thead>
+                        <tr>
+                            <th>Metric</th>
+                            <th>EdgeHub</th>
+                            <th>B2B SaaS avg</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Awareness → Interest</td>
+                            <td class="val">~74%
+                                <div class="funnel-bar-track">
+                                    <div class="funnel-bar-fill" style="--fill:74%"></div>
+                                </div>
+                            </td>
+                            <td>40–70%</td>
+                        </tr>
+                        <tr>
+                            <td>Social CTR</td>
+                            <td class="val">1.6–3.0%
+                                <div class="funnel-bar-track">
+                                    <div class="funnel-bar-fill" style="--fill:30%"></div>
+                                </div>
+                            </td>
+                            <td>1–2%</td>
+                        </tr>
+                        <tr>
+                            <td>LinkedIn engagement</td>
+                            <td class="val">2.8–5%+
+                                <div class="funnel-bar-track">
+                                    <div class="funnel-bar-fill" style="--fill:50%"></div>
+                                </div>
+                            </td>
+                            <td>1–2%</td>
+                        </tr>
+                        <tr>
+                            <td>eDM open rate</td>
+                            <td class="val">25.4%
+                                <div class="funnel-bar-track">
+                                    <div class="funnel-bar-fill" style="--fill:25%"></div>
+                                </div>
+                            </td>
+                            <td>18–22%</td>
+                        </tr>
+                        <tr>
+                            <td>Interest → MQL</td>
+                            <td class="val">~0.08%
+                                <div class="funnel-bar-track">
+                                    <div class="funnel-bar-fill" style="--fill:8%"></div>
+                                </div>
+                            </td>
+                            <td>0.05–0.2%</td>
+                        </tr>
+                    </tbody>
+                </table>
 
-                <p class="proj-insight">Feature-led messaging limited users to the awareness stage. By pivoting to
-                    address security concerns and onboarding friction, the campaign drove mid-to-lower funnel
-                    conversion, <strong>contributing to an 11% lift in device registrations</strong> in Wave 2.</p>
-
-                <p class="proj-section-label">Channel Assets</p>
-                <div class="channel-grid">
-                    <div class="channel-card">
-                        <div class="channel-card-head">Shorts</div>
-                        <div class="channel-img-ph" style="aspect-ratio:9/16;max-height:270px;"><img class="channel-img"
-                                src="shorts.png" alt="Shorts"></div>
-                        <div class="channel-card-body">Short-form video driving awareness and product discovery</div>
-                    </div>
-                    <div class="channel-card">
-                        <div class="channel-card-head">eDM</div>
-                        <div class="channel-img-ph" style="aspect-ratio:3/4;max-height:270px;"><img class="channel-img"
-                                src="eDM.png" alt="eDM"></div>
-                        <div class="channel-card-body">A/B tested subject lines — 25.4% open rate, +11% vs prior period
-                        </div>
-                    </div>
-                    <div class="channel-card">
-                        <div class="channel-card-head">LinkedIn Newsletter</div>
-                        <div class="channel-img-ph" style="aspect-ratio:3/4;max-height:270px;"><img class="channel-img"
-                                src="Newsletter.png" alt="Newsletter"></div>
-                        <div class="channel-card-body">IoT security theme — above B2B CTR benchmarks</div>
-                    </div>
-                </div>
+                <p class="proj-insight">Also researched and authored a <a
+                        href="https://www.linkedin.com/pulse/why-industrial-iot-security-can-longer-afterthought-entering-3lztc/"
+                        target="_blank" rel="noopener">cybersecurity industry article</a> for Advantech's LinkedIn
+                    newsletter, <em>Next in Edge & AIoT</em>, which reached a 27% open rate.</p>
             </div>
+
 
             <!-- PLATFORM -->
             <div class="proj-card fi" data-c="platform">
-                <div class="proj-tags"><span class="ptag ptag-blue">GTM</span><span
-                        class="ptag ptag-sky">SaaS</span><span class="ptag ptag-green">Ecosystem Strategy</span>
+                <div class="proj-tags"><span class="ptag ptag-blue">GTM</span><span class="ptag ptag-green">Ecosystem
+                        Strategy</span>
                 </div>
-                <h2>Advantech WISE — Partner Program</h2>
-                <p class="proj-summary">Designed a partner program framework by structuring ecosystem roles,
-                    defining partner progression models, and aligning enablement with go-to-market execution.</p>
+                <h2>Advantech WISE Partner Program</h2>
+                <p class="proj-summary">Contributed to building the WISE Partner Program from framework design through
+                    implementation.
+                    Managed Marketplace listing and onboarding for 20+ SI and ISV partners.
+                    Building on this foundation, independently led strategy for five new partner-facing web pages,
+                    aligning BD, engineering, and cross-functional stakeholders end to end.</p>
                 <p class="proj-section-label">Framework Design Process</p>
                 <div class="framework-steps">
                     <div class="fw-step">
@@ -2290,36 +1930,39 @@
                         <h4>Benchmark &amp; Problem Framing</h4>
                         <ul>
                             <li>Benchmarked industry partner programs across tiering, incentives, and collaboration
-                                models</li>
-                            <li>Identified structural gaps between incentive design and actual partner engagement</li>
+                                models.</li>
+                            <li>Identified gaps between incentive design and partner engagement, defining key framework
+                                principles.</li>
                         </ul>
                     </div>
                     <div class="fw-step">
                         <div class="fw-step-num">2</div>
                         <h4>Partner Mapping &amp; Segmentation</h4>
                         <ul>
-                            <li>Defined partner roles across SI, ISV, and solution providers based on capabilities and
-                                contribution models</li>
-                            <li>Applied the framework to existing partners to test segmentation logic and ensure role
-                                consistency</li>
+                            <li>Defined partner roles across Service SI, ISV, and Channel Partner based on capabilities
+                                and contribution.</li>
+                            <li>Validated the framework against existing partners to ensure consistent segmentation.
+                            </li>
                         </ul>
                     </div>
                     <div class="fw-step">
                         <div class="fw-step-num">3</div>
-                        <h4>Lifecycle &amp; Progression</h4>
+                        <h4>Partner Lifecycle & Progression</h4>
                         <ul>
-                            <li>Designed partner growth path from entry to advanced</li>
-                            <li>Established milestone-based progression criteria to guide partner development</li>
+                            <li>Designed growth path from entry to advanced stages.</li>
+                            <li>Established milestone-based progression criteria to guide partner development.</li>
                         </ul>
                     </div>
                     <div class="fw-step">
                         <div class="fw-step-num">4</div>
                         <h4>Ecosystem Mechanism</h4>
                         <ul>
-                            <li>Connected enablement, GTM, and revenue into a unified framework</li>
+                            <li>Integrated partner enablement, GTM, and revenue generation into one operating framework.
+                            </li>
                             <li>Enabled partners to scale from one-off projects to repeatable solutions</li>
                         </ul>
                     </div>
+
                 </div>
                 <div class="nda-note">Due to confidentiality, details have been generalized to focus on methodology and
                     framework design.</div>
@@ -2387,7 +2030,7 @@
                             <p class="pn-sub">Need clustering</p>
                         </div>
                         <div class="process-arrow"></div>
-                        <div class="process-node active">
+                        <div class="process-node">
                             <div class="process-step-num">4</div>
                             <p class="pn-title">Figma</p>
                             <p class="pn-sub">High-fidelity prototype</p>
@@ -2446,56 +2089,27 @@
                             Interface
                             Design</span>
                     </div>
-                    <h2>Advantech Marketplace — Website Content Optimisation</h2>
-                    <p class="ux-summary">Contributed to content restructuring and layout optimisation of Marketplace
-                        pages by analysing user journey and benchmarking competitor websites. Identified gaps in
-                        existing components and explored alternative presentation patterns (e.g., dropdown structures
-                        and content grouping).
+                    <h2>Advantech Marketplace — Website Optimisation</h2>
+                    <p class="ux-summary">Optimised Marketplace content and page structures through user journey
+                        analysis and defining new UI components for improved presentation.
                     </p>
-                    <p class="proj-section-label">Component Inventory &amp; New Additions</p>
+
                     <div class="ux-bullets">
-                        <p class="ub-title">Key workflow included:</p>
+                        <p class="ub-title">Key work included:</p>
                         <div class="ux-bullet-item">
                             <div class="ub-dot"></div>
-                            <p>Analysed competitor websites to benchmark component structures</p>
+                            <p>Led strategy for 5 partner web pages and two solution page, aligning BD, Engineering, and
+                                stakeholders on listing structure, UX, and onboarding workflows.</p>
+                        </div>
+
+                        <div class="ux-bullet-item">
+                            <div class="ub-dot"></div>
+                            <p>Defined tracking specifications with Engineering to support user behavior measurement and
+                                performance analysis.</p>
                         </div>
                         <div class="ux-bullet-item">
                             <div class="ub-dot"></div>
-                            <p>Audited existing components (overview, use case, CTA blocks)</p>
-                        </div>
-                        <div class="ux-bullet-item">
-                            <div class="ub-dot"></div>
-                            <p>Proposed additional UI modules based on and content needs</p>
-                        </div>
-                        <div class="ux-bullet-item">
-                            <div class="ub-dot"></div>
-                            <p>Collaborated with the UI team to refine and define new components</p>
-                        </div>
-                    </div>
-                    <div class="ux-img-grid-2">
-                        <div class="ux-img-card">
-                            <div class="ux-img-head">Benchmarking & Struture Analysis</div>
-                            <div class="ux-img-ph" style="aspect-ratio:16/9;">
-                                <img class="channel-img" src="amazon.png" alt="Benchmarking & Pattern Analysis">
-                            </div>
-                        </div>
-                        <div class="ux-img-card">
-                            <div class="ux-img-head">Benchmarking & Dropdown Analysis</div>
-                            <div class="ux-img-ph" style="aspect-ratio:16/9;">
-                                <img class="channel-img" src="Dropdown.png" alt="after">
-                            </div>
-                        </div>
-                        <div class="ux-img-card">
-                            <div class="ux-img-head">Component Proposal（Role-based entry design））</div>
-                            <div class="ux-img-ph" style="aspect-ratio:16/9;">
-                                <img class="channel-img" src="proposal.png" alt="Component Proposal">
-                            </div>
-                        </div>
-                        <div class="ux-img-card">
-                            <div class="ux-img-head">UI Component Design Figma</div>
-                            <div class="ux-img-ph" style="aspect-ratio:16/9;">
-                                <img class="channel-img" src="Design.png" alt="UI Component Design">
-                            </div>
+                            <p>Collaborated with Engineering and UI teams to refine and implement new components.</p>
                         </div>
                     </div>
                     <div class="nda-note1">Due to confidentiality, details have been generalized and are shared for
@@ -2549,7 +2163,7 @@
                 <div class="ux-proj">
                     <div class="proj-tags"><span class="ptag ptag-blue">Data</span><span class="ptag ptag-sky">Academic
                             Research</span></div>
-                    <h2>Analysis of How Different Social Platforms Shape Different Types of Anxietyy</h2>
+                    <h2>Analysis of How Different Social Platforms Shape Different Types of Anxiety</h2>
                     <p class="ux-summary">This is a four-person group study examining the relationship between social
                         media
                         usage and different types of anxiety among youth aged 16–24 across Instagram, Dcard, and
@@ -2559,13 +2173,17 @@
                     </div>
                     <p class="proj-section-label">Study Overview</p>
                     <div class="stat-cards">
-                        <div class="stat-card"><span class="stat-num">441</span><span class="stat-lbl">Surveys
+                        <div class="stat-card"><span class="stat-num" data-target="441">0</span><span
+                                class="stat-lbl">Surveys
                                 distributed</span></div>
-                        <div class="stat-card"><span class="stat-num">3</span><span class="stat-lbl">Platforms
+                        <div class="stat-card"><span class="stat-num" data-target="3">0</span><span
+                                class="stat-lbl">Platforms
                                 studied</span></div>
-                        <div class="stat-card"><span class="stat-num">15</span><span class="stat-lbl">Hypotheses
+                        <div class="stat-card"><span class="stat-num" data-target="15">0</span><span
+                                class="stat-lbl">Hypotheses
                                 tested</span></div>
-                        <div class="stat-card"><span class="stat-num">3</span><span class="stat-lbl">Anxiety
+                        <div class="stat-card"><span class="stat-num" data-target="3">0</span><span
+                                class="stat-lbl">Anxiety
                                 types</span></div>
                     </div>
                     <p class="proj-section-label">Research Methods</p>
@@ -2618,12 +2236,12 @@
         <div class="s-line fi"></div>
         <p class="s-sub fi">Now we're basically friends and that means we should connect</p>
         <div class="contact-row fi">
-            <a href="mailto:celineyin91@gmail.com" class="c-card">
+            <a href="mailto:celineyin91@gmail.com" class="c-card" data-copy="celineyin91@gmail.com">
                 <div><small>Email</small><span><span class="__cf_email__"
                             data-cfemail="mailtocelineyin91@gmail.com">celineyin91@gmail.com</span></span>
                 </div>
             </a>
-            <a href="tel:+886966767886" class="c-card">
+            <a href="tel:+886966767886" class="c-card" data-copy="+886 966 767 886">
                 <div><small>Phone</small><span>+886 966 767 886</span></div>
             </a>
             <a href="https://www.linkedin.com/in/celine-yin-2757a735a/" class="c-card">
@@ -2671,6 +2289,67 @@
         }, { threshold: .15 });
         document.querySelectorAll('.flip-card').forEach(el => flipObs.observe(el));
 
+        /* ── Scrollspy: highlight the current nav link ── */
+        (function () {
+            const navLinks = Array.from(document.querySelectorAll('.nav-links a'));
+            const sections = navLinks
+                .map(a => document.querySelector(a.getAttribute('href')))
+                .filter(Boolean);
+            if (!sections.length) return;
+            const spy = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        const id = '#' + entry.target.id;
+                        navLinks.forEach(l => l.classList.toggle('active-link', l.getAttribute('href') === id));
+                    }
+                });
+            }, { rootMargin: '-45% 0px -50% 0px', threshold: 0 });
+            sections.forEach(s => spy.observe(s));
+        })();
+
+        /* ── Count-up animation for stat numbers ── */
+        (function () {
+            function animateCount(el) {
+                const target = parseFloat(el.dataset.target);
+                if (isNaN(target)) return;
+                const suffix = el.dataset.suffix || '';
+                const decimals = el.dataset.decimals ? parseInt(el.dataset.decimals, 10) : 0;
+                const duration = 1100;
+                const start = performance.now();
+                function step(now) {
+                    const progress = Math.min((now - start) / duration, 1);
+                    const eased = 1 - Math.pow(1 - progress, 3);
+                    el.textContent = (target * eased).toFixed(decimals) + suffix;
+                    if (progress < 1) requestAnimationFrame(step);
+                }
+                requestAnimationFrame(step);
+            }
+            const countObs = new IntersectionObserver((entries) => {
+                entries.forEach(e => {
+                    if (e.isIntersecting) {
+                        animateCount(e.target);
+                        countObs.unobserve(e.target);
+                    }
+                });
+            }, { threshold: .4 });
+            document.querySelectorAll('.stat-num, .count-up').forEach(el => countObs.observe(el));
+        })();
+
+        /* ── Funnel bar fill-in on scroll ── */
+        (function () {
+            const bars = document.querySelectorAll('.funnel-bar-fill');
+            if (!bars.length) return;
+            const barObs = new IntersectionObserver((entries) => {
+                entries.forEach(e => {
+                    if (e.isIntersecting) {
+                        e.target.classList.add('show');
+                        barObs.unobserve(e.target);
+                    }
+                });
+            }, { threshold: .5 });
+            bars.forEach(b => barObs.observe(b));
+        })();
+
         /* ── Filter with fade-in animation ── */
         let amazonChart;
         function filterP(cat, btn) {
@@ -2694,55 +2373,19 @@
         }
         document.addEventListener('DOMContentLoaded', () => filterP('marketing', document.querySelector('.ftab')));
 
-        /* ── Funnel viz: staggered entry ── */
-        (function () {
-            const stages = [
-                { label: 'Awareness', val: '—', w: 100, bg: '#1D4ED8' },
-                { label: 'Interest', val: '73.9%', w: 82, bg: '#185FA5' },
-                { label: 'MQL', val: '0.08%', w: 64, bg: '#0C447C' },
-                { label: 'PQL', val: '58.15%', w: 46, bg: '#042C53' },
-            ];
-            const el = document.getElementById('funnelViz');
-            if (!el) return;
-            stages.forEach((s, i) => {
-                const div = document.createElement('div');
-                div.className = 'funnel-stage';
-                div.style.cssText = `width:${s.w}%;background:${s.bg};transition-delay:${i * 130 + 400}ms`;
-                div.innerHTML = `<span>${s.label}</span><small>${s.val}</small>`;
-                el.appendChild(div);
-                if (i < stages.length - 1) { const a = document.createElement('div'); a.className = 'funnel-arrow'; el.appendChild(a); }
+        /* ── Click-to-copy on contact cards ── */
+        document.querySelectorAll('.c-card[data-copy]').forEach(card => {
+            card.addEventListener('click', (e) => {
+                const text = card.dataset.copy;
+                if (!navigator.clipboard) return;
+                navigator.clipboard.writeText(text).then(() => {
+                    const label = card.querySelector('small');
+                    if (!label) return;
+                    const original = label.textContent;
+                    label.textContent = 'Copied!';
+                    setTimeout(() => { label.textContent = original; }, 1200);
+                }).catch(() => { });
             });
-            setTimeout(() => { el.querySelectorAll('.funnel-stage').forEach(s => s.classList.add('show')); }, 500);
-        })();
-
-        /* ── Hobby video switcher ── */
-        let cur = 'travel';
-        function showVideo(id, el) {
-            document.querySelectorAll('.b-video').forEach(v => {
-                v.classList.remove('show');
-                v.querySelector('video')?.pause();
-            });
-            document.querySelectorAll('.recharge-card').forEach(c => c.classList.remove('active'));
-            const panel = document.getElementById('video-' + id);
-            if (panel) {
-                panel.classList.add('show');
-                const vid = panel.querySelector('video');
-                if (vid) { vid.currentTime = 0; vid.play(); }
-            }
-            el?.classList.add('active');
-            cur = id;
-        }
-        function resetVideo() {
-            // keep current playing, just update active card highlight
-            document.querySelectorAll('.recharge-card').forEach(c => c.classList.remove('active'));
-            document.querySelectorAll('.recharge-card').forEach(c => {
-                if (c.dataset.video === cur) c.classList.add('active');
-            });
-        }
-        // autoplay first video on load
-        document.addEventListener('DOMContentLoaded', () => {
-            const first = document.querySelector('#video-travel video');
-            if (first) first.play().catch(() => { });
         });
 
         /* ── 3-D tilt on thought visual ── */

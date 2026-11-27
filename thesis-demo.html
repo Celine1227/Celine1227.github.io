@@ -1,0 +1,1225 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1"><title>Omnix AI 實驗示範 — Celine Yin</title>
+  <base target="_top">
+  <meta charset="UTF-8">
+  <style>
+  :root {
+    color-scheme: light;
+    --bg: #ffffff;
+    --soft: #f5f5f5;
+    --ink: #0d0d0d;
+    --ink-2: #5d5d5d;
+    --ink-3: #8f8f8f;
+    --line: #ececec;
+    --chip: #f4f4f4;
+    --chip-h: #e9e9e9;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; min-height: 100%; }
+  body {
+    background: var(--bg); color: var(--ink);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang TC", "Noto Sans TC", "Microsoft JhengHei", sans-serif;
+    font-size: 15px; line-height: 1.65; -webkit-font-smoothing: antialiased;
+  }
+  button { font: inherit; color: inherit; cursor: pointer; }
+  @keyframes rise { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: none; } }
+
+  /* ---------- 頂部列 ---------- */
+  .topbar {
+    position: sticky; top: 0; z-index: 5; height: 56px; padding: 0 20px;
+    display: flex; align-items: center; justify-content: space-between;
+    background: rgba(255,255,255,.9); backdrop-filter: blur(8px); border-bottom: 1px solid var(--line);
+  }
+  .logo { display: flex; align-items: center; gap: 10px; font-weight: 600; font-size: 17px; }
+  .logo-mark { width: 24px; height: 24px; border-radius: 50%; background: var(--ink); display: grid; place-items: center; }
+  .logo-mark span { width: 10px; height: 10px; border: 2px solid #fff; border-radius: 50%; }
+  .topnav { display: flex; gap: 4px; }
+  .topnav a { padding: 6px 14px; border-radius: 999px; color: var(--ink-2); font-size: 14px; cursor: pointer; }
+  .topnav a:hover { background: var(--chip); color: var(--ink); }
+  .me { width: 30px; height: 30px; border-radius: 50%; background: var(--chip-h); color: var(--ink-2); display: grid; place-items: center; font-size: 13px; cursor: pointer; }
+
+  /* ---------- 設定頁 ---------- */
+  main { max-width: 980px; margin: 0 auto; padding: 44px 24px 80px; }
+  h1 { font-size: 26px; font-weight: 600; letter-spacing: -.2px; margin: 0 0 28px; }
+  .settings { display: grid; grid-template-columns: 200px 1fr; gap: 44px; align-items: start; }
+  .side { display: flex; flex-direction: column; gap: 2px; }
+  .side a { padding: 8px 12px; border-radius: 10px; color: var(--ink-2); font-size: 14px; cursor: pointer; }
+  .side a:hover { background: var(--chip); color: var(--ink); }
+  .side a.on { background: var(--chip); color: var(--ink); font-weight: 600; }
+  .sec { padding: 26px 0; border-bottom: 1px solid var(--line); }
+  .sec:first-child { padding-top: 0; }
+  .sec:last-child { border-bottom: none; }
+  .sec-head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; }
+  .sec h2 { font-size: 16px; font-weight: 600; margin: 0; }
+  .plan-hero {
+    display: flex; justify-content: space-between; align-items: center; gap: 20px; flex-wrap: wrap;
+    border: 1px solid var(--line); border-radius: 18px; padding: 22px 24px;
+  }
+  .plan-hero .name { font-size: 20px; font-weight: 600; display: flex; align-items: center; gap: 10px; }
+  .meta { color: var(--ink-2); font-size: 14px; margin-top: 4px; }
+  .cta { display: flex; flex-direction: column; align-items: center; gap: 6px; }
+  .hint { font-size: 12px; color: var(--ink-3); }
+  .tag { font-size: 12px; font-weight: 500; background: var(--chip); color: var(--ink-2); border-radius: 999px; padding: 2px 10px; }
+  .row { display: flex; justify-content: space-between; align-items: center; padding: 10px 0; font-size: 14px; }
+  .row .k { color: var(--ink-2); }
+  table.bill { width: 100%; border-collapse: collapse; font-size: 14px; }
+  table.bill th { text-align: left; color: var(--ink-3); font-weight: 500; font-size: 13px; padding: 8px 0; border-bottom: 1px solid var(--line); }
+  table.bill td { padding: 11px 0; border-bottom: 1px solid var(--line); }
+  table.bill tr:last-child td { border-bottom: none; }
+
+  /* ---------- 按鈕 ---------- */
+  .btn {
+    border: none; border-radius: 999px; padding: 10px 20px; font-size: 14px; font-weight: 500;
+    background: var(--chip); color: var(--ink); transition: background .15s, opacity .15s;
+  }
+  .btn:hover { background: var(--chip-h); }
+  .btn-black { background: var(--ink); color: #fff; }
+  .btn-black:hover { background: #2f2f2f; }
+  .btn-outline { background: #fff; border: 1px solid #d6d6d6; }
+  .btn-outline:hover { background: var(--chip); }
+  .btn-lg { padding: 12px 26px; font-size: 15px; }
+  .btn:disabled { opacity: .35; cursor: not-allowed; }
+  .btn.chosen:disabled { opacity: 1; }
+  .link { background: none; border: none; padding: 0; font-size: 14px; color: var(--ink); text-decoration: underline; text-underline-offset: 3px; }
+
+  /* ---------- 變更方案（全螢幕，參考 ChatGPT 方案頁） ---------- */
+  .overlay {
+    position: fixed; inset: 0; z-index: 20; overflow-y: auto; background: var(--soft);
+    opacity: 0; transform: translateY(10px); transition: opacity .22s ease, transform .22s ease;
+  }
+  .overlay.show { opacity: 1; transform: none; }
+  .ov-close {
+    position: fixed; top: 18px; right: 22px; width: 38px; height: 38px; border-radius: 50%;
+    border: none; background: transparent; font-size: 22px; line-height: 1; color: var(--ink-2);
+  }
+  .ov-close:hover { background: var(--chip-h); color: var(--ink); }
+  .ov-inner { max-width: 1060px; margin: 0 auto; padding: 64px 24px 80px; text-align: center; }
+  .ov-inner h1 { font-size: 32px; margin: 0 0 8px; }
+  .ov-sub { color: var(--ink-2); margin: 0; }
+  .cancel-bar {
+    display: inline-flex; align-items: center; gap: 18px; flex-wrap: wrap; justify-content: center;
+    margin: 26px 0 34px; padding: 8px 8px 8px 24px; background: #fff; border: 1px solid var(--line); border-radius: 999px;
+    font-size: 15px; font-weight: 500;
+  }
+  .plans { display: grid; grid-template-columns: repeat(2, 1fr); max-width: 760px; margin: 0 auto; gap: 16px; text-align: left; }
+  .plan { background: #fff; border: 1px solid var(--line); border-radius: 24px; padding: 28px; display: flex; flex-direction: column; }
+  .plan.current { border-color: #c9c9c9; }
+  .plan .pname { display: flex; justify-content: space-between; align-items: center; font-weight: 600; }
+  .plan .tagline { font-size: 22px; font-weight: 600; margin: 16px 0 4px; letter-spacing: -.2px; }
+  .plan .desc { color: var(--ink-2); font-size: 14px; min-height: 46px; margin: 0; }
+  .plan .price { font-size: 34px; font-weight: 600; letter-spacing: -.5px; margin: 20px 0; }
+  .plan .price small { font-size: 14px; font-weight: 400; color: var(--ink-2); letter-spacing: 0; }
+  .plan .btn { width: 100%; }
+  .feats { list-style: none; padding: 0; margin: 22px 0 0; display: grid; gap: 11px; font-size: 14px; }
+  .feats li { display: flex; gap: 10px; align-items: center; }
+  .feats svg { flex: none; }
+
+  /* ---------- 取消流程對話框（四組相同的容器） ---------- */
+  .backdrop {
+    position: fixed; inset: 0; z-index: 40; display: grid; place-items: center; padding: 16px;
+    background: rgba(0,0,0,.32); opacity: 0; transition: opacity .2s ease;
+  }
+  .backdrop.show { opacity: 1; }
+  .dialog {
+    width: 100%; max-width: 560px; background: #fff; border-radius: 22px; overflow: hidden;
+    box-shadow: 0 24px 64px rgba(0,0,0,.18);
+    transform: translateY(10px) scale(.98); transition: transform .22s ease, height .25s ease;
+  }
+  .backdrop.show .dialog { transform: none; }
+  .view { padding: 30px 30px 26px; transition: opacity .18s ease; }
+  .view.fading { opacity: 0; }
+  .view h3 { font-size: 22px; font-weight: 600; letter-spacing: -.2px; margin: 0 0 10px; }
+  .view p { margin: 0; color: var(--ink-2); }
+  .view .msg { color: var(--ink); line-height: 1.8; }
+  .msg ul, .m-ai .t ul { margin: 10px 0 0; padding-left: 20px; display: grid; gap: 6px; }
+  .msg strong, .m-ai .t strong { font-weight: 600; }
+  .foot { display: flex; justify-content: flex-end; gap: 10px; flex-wrap: wrap; margin-top: 28px; }
+  .ack { display: flex; align-items: center; gap: 6px; font-size: 13px; color: var(--ink-3); margin-bottom: 14px; }
+  .radios { display: grid; gap: 2px; margin-top: 8px; }
+  .radio { display: flex; align-items: center; gap: 12px; padding: 9px 2px; cursor: pointer; }
+  .radio input {
+    appearance: none; -webkit-appearance: none; width: 18px; height: 18px; margin: 0; flex: none; cursor: pointer;
+    border: 1.5px solid #b5b5b5; border-radius: 50%; display: grid; place-items: center;
+  }
+  .radio input:checked { border-color: var(--ink); }
+  .radio input:checked::after { content: ""; width: 9px; height: 9px; border-radius: 50%; background: var(--ink); }
+
+  /* ---------- Chatbot（參考 ChatGPT 對話樣式） ---------- */
+  .view.chat { padding: 0; }
+  .chat-head { display: flex; align-items: center; gap: 10px; padding: 16px 22px; border-bottom: 1px solid var(--line); }
+  .bot-av { width: 28px; height: 28px; border-radius: 50%; background: var(--ink); color: #fff; display: grid; place-items: center; font-size: 12px; font-weight: 600; flex: none; }
+  .chat-name { font-weight: 600; line-height: 1.25; }
+  .chat-sub { font-size: 12px; color: var(--ink-3); line-height: 1.25; display: flex; align-items: center; gap: 5px; }
+  .dot { width: 6px; height: 6px; border-radius: 50%; background: #10a37f; }
+  .chat-body { height: 380px; overflow-y: auto; padding: 22px; display: flex; flex-direction: column; gap: 16px; scroll-behavior: smooth; }
+  .sys { text-align: center; font-size: 12px; color: var(--ink-3); }
+  .m-ai { display: flex; gap: 12px; align-items: flex-start; animation: rise .25s ease-out; }
+  .m-ai .t { padding-top: 2px; }
+  .m-user { align-self: flex-end; max-width: 75%; background: var(--chip); padding: 9px 16px; border-radius: 18px; animation: rise .25s ease-out; }
+  .typing { display: flex; gap: 5px; padding-top: 11px; }
+  .typing i { width: 6px; height: 6px; border-radius: 50%; background: var(--ink-3); animation: blink 1s infinite; }
+  .typing i:nth-child(2) { animation-delay: .15s; }
+  .typing i:nth-child(3) { animation-delay: .3s; }
+  @keyframes blink { 0%, 80%, 100% { opacity: .25; } 40% { opacity: 1; } }
+  .chat-foot { padding: 0 22px 22px; }
+  .quick { display: flex; gap: 8px; flex-wrap: wrap; justify-content: flex-end; min-height: 42px; margin-bottom: 10px; }
+  .quick .btn { animation: rise .25s ease-out; }
+  .composer { border: 1px solid var(--line); border-radius: 999px; padding: 11px 18px; color: var(--ink-3); font-size: 14px; box-shadow: 0 1px 6px rgba(0,0,0,.04); }
+
+  /* ---------- 提示 ---------- */
+  .toast {
+    position: fixed; left: 50%; bottom: 28px; z-index: 60; transform: translateX(-50%) translateY(16px); opacity: 0;
+    background: var(--ink); color: #fff; padding: 9px 18px; border-radius: 999px; font-size: 13px;
+    transition: all .2s; pointer-events: none;
+  }
+  .toast.show { opacity: 1; transform: translateX(-50%); }
+
+  @media (max-width: 820px) {
+    .settings { grid-template-columns: 1fr; gap: 20px; }
+    .side { flex-direction: row; overflow-x: auto; }
+    .side a { white-space: nowrap; }
+    .plans { grid-template-columns: 1fr; }
+    .topnav { display: none; }
+    .ov-inner { padding-top: 56px; }
+  }
+
+  /* ============================================================
+     問卷頁（同意書、情境、後測、結束說明）
+     ============================================================ */
+  [hidden] { display: none !important; }
+  .sv-wrap { min-height: 100vh; background: var(--soft); padding: 40px 16px 80px; }
+  .sv { max-width: 720px; margin: 0 auto; background: #fff; border: 1px solid var(--line); border-radius: 22px; padding: 36px 36px 30px; }
+  .loading { color: var(--ink-3); text-align: center; margin: 40px 0; }
+  .sv-progress { height: 4px; background: var(--chip); border-radius: 99px; margin: 0 0 28px; overflow: hidden; }
+  .sv-progress i { display: block; height: 100%; background: var(--ink); transition: width .3s ease; }
+  .sv h2 { font-size: 22px; font-weight: 600; letter-spacing: -.2px; margin: 0 0 10px; }
+  .sv .intro { color: var(--ink-2); margin: 0 0 8px; }
+  .sv .note { margin: 16px 0 4px; }
+  .sv .box { background: var(--soft); border-radius: 14px; padding: 18px 20px; color: var(--ink); line-height: 1.8; }
+  .sv .box p { margin: 0 0 10px; } .sv .box p:last-child { margin: 0; }
+  .q { padding: 20px 0 18px; border-bottom: 1px solid var(--line); }
+  .q:last-of-type { border-bottom: none; }
+  .q-text { font-weight: 500; margin-bottom: 14px; }
+  .q.missing .q-text::after { content: "　請回答此題"; color: #c0392b; font-size: 13px; font-weight: 400; }
+  .scale { display: grid; grid-template-columns: repeat(7, 1fr); gap: 4px; }
+  .scale label { display: flex; flex-direction: column; align-items: center; gap: 6px; font-size: 12px; color: var(--ink-3); cursor: pointer; padding: 4px 0; border-radius: 10px; }
+  .scale label:hover { background: var(--chip); }
+  .anchors { display: flex; justify-content: space-between; font-size: 12px; color: var(--ink-3); margin-top: 6px; }
+  .bipolar { display: grid; grid-template-columns: 84px 1fr 84px; align-items: center; gap: 8px; }
+  .bipolar .end { font-size: 14px; } .bipolar .end.r { text-align: right; }
+  .pick { appearance: none; -webkit-appearance: none; width: 20px; height: 20px; margin: 0; cursor: pointer;
+          border: 1.5px solid #b5b5b5; border-radius: 50%; display: grid; place-items: center; background: #fff; }
+  .pick:checked { border-color: var(--ink); }
+  .pick:checked::after { content: ""; width: 10px; height: 10px; border-radius: 50%; background: var(--ink); }
+  .sv .radio { padding: 8px 2px; }
+  .sv textarea { width: 100%; min-height: 96px; border: 1px solid #d6d6d6; border-radius: 12px; padding: 12px 14px; font: inherit; resize: vertical; }
+  .sv-foot { display: flex; justify-content: flex-end; align-items: center; gap: 12px; margin-top: 26px; }
+  .sv-foot .err { margin-right: auto; color: #c0392b; font-size: 13px; }
+  .code { color: var(--ink); display: inline-block; font-size: 22px; font-weight: 600; letter-spacing: 2px; background: var(--soft); border-radius: 12px; padding: 10px 18px; margin: 6px 0 4px; }
+  @media (max-width: 600px) {
+    .sv-wrap { padding: 16px 12px 60px; }
+    .sv { padding: 24px 18px 22px; border-radius: 18px; }
+    .bipolar { grid-template-columns: 1fr; }
+    .bipolar .end.r { text-align: left; }
+  }
+  /* ---------- 前測：訊息卡片 ---------- */
+  .msgcard { border: 1px solid var(--line); border-radius: 16px; padding: 18px 22px; background: #fff; box-shadow: 0 1px 6px rgba(0,0,0,.04); }
+  .msgcard-label { font-size: 12px; font-weight: 600; color: var(--ink-3); margin-bottom: 8px; letter-spacing: .5px; }
+  .msgcard .msg { line-height: 1.8; }
+  .msgcard .msg ul { margin: 10px 0 0; padding-left: 20px; display: grid; gap: 6px; }
+  .msgcard .msg strong { font-weight: 600; }
+  .compare { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+  @media (max-width: 600px) { .compare { grid-template-columns: 1fr; } }
+  /* ---------- 後測：挽留訊息畫面（受試者剛才看到的對話框，不可點選） ---------- */
+  .snap-label { font-size: 13px; color: var(--ink-3); margin-bottom: 10px; }
+  .snap { pointer-events: none; user-select: none; margin-bottom: 8px; }
+  .snap .dialog { transform: none; transition: none; max-width: 100%; box-shadow: 0 6px 24px rgba(0,0,0,.08); border: 1px solid var(--line); }
+  .snap .chat-body { height: auto; overflow: visible; }
+  .snap .m-ai, .snap .m-user, .snap .quick .btn { animation: none; }
+  .snap .view.fading { opacity: 1; }
+  /* 複選題（方形勾選框） */
+  .radio.check input { border-radius: 5px; }
+  .radio.check input:checked { background: var(--ink); border-color: var(--ink); }
+  .radio.check input:checked::after { width: 5px; height: 9px; border-radius: 0; background: none; border: solid #fff; border-width: 0 2px 2px 0; transform: translateY(-1px) rotate(45deg); }
+  /* 結束頁：抽獎（選填電子郵件） */
+  .lottery { border: 1px solid var(--line); border-radius: 16px; padding: 20px 22px; margin: 22px 0; background: #fff; }
+  .lot-title { font-size: 16px; font-weight: 600; margin: 0 0 8px; color: var(--ink); }
+  .lot-note { font-size: 13px; color: var(--ink-3); }
+  .lot-form { display: flex; gap: 10px; margin-top: 14px; }
+  .lot-form input { flex: 1; min-width: 0; border: 1px solid #d6d6d6; border-radius: 999px; padding: 10px 16px; font: inherit; }
+  .lot-form input:focus { outline: none; border-color: var(--ink); }
+  .lot-msg { font-size: 13px; color: var(--ink-2); margin-top: 8px; min-height: 18px; }
+  .lot-msg.err { color: #c0392b; }
+</style>
+
+</head>
+<body>
+<div class="demo-bar" style="position:fixed;left:0;right:0;bottom:0;z-index:100;display:flex;justify-content:center;gap:14px;align-items:center;flex-wrap:wrap;padding:10px 16px;background:#0d0d0d;color:#fff;font-size:13px">
+  <span>研究示範版本（Thesis demo）：此頁面不會儲存任何作答或電子郵件。</span>
+  <a href="portfolio.html#case-thesis" style="color:#fff;text-decoration:underline;text-underline-offset:3px">回到作品集 Back to portfolio</a>
+</div>
+  <!-- 問卷頁（同意書、情境、後測、結束說明） -->
+  <div id="survey" class="sv-wrap"><div class="sv"><p class="loading">載入中…</p></div></div>
+
+  <!-- 實驗介面（Omnix AI 設定頁與取消流程） -->
+  <div id="omnix" hidden>
+    <header class="topbar">
+      <div class="logo"><div class="logo-mark"><span></span></div>Omnix AI</div>
+      <nav class="topnav">
+        <a data-inert="nav_chat">對話</a><a data-inert="nav_projects">專案</a><a data-inert="nav_templates">範本</a>
+      </nav>
+      <div class="me" data-inert="nav_me">我</div>
+    </header>
+    <main id="app"></main>
+    <div class="toast" id="toast"></div>
+  </div>
+
+  <script>
+/**
+ * Omnix AI 取消流程實驗【正式實驗】：Google Apps Script 後端
+ * --------------------------------------------------------------
+ * 1. 在 Apps Script 貼上本專案所有檔案（從試算表的「擴充功能 → Apps Script」開啟，或直接新建專案皆可）。
+ * 2. 先執行一次 setup()，授權並建立工作表；資料試算表網址會印在「執行記錄」。
+ * 3. 部署 → 新增部署作業 → 網頁應用程式：
+ *      執行身分：我；存取權：任何人。
+ * 4. 受試者網址：<部署網址>?pid=受試者編號（不帶 pid 時系統會自動產生）
+ *    研究者預覽某一組：<部署網址>?cond=1~4&test=1（資料會標記為測試，不計入分組平衡）
+ */
+
+/* ============================================================
+   實驗設定：組別與挽留訊息（唯一的訊息來源，改這裡即可）
+   ============================================================ */
+const CONFIG = {
+  STUDY_ID: 'omnix-cancel-2026',
+  CONDITIONS: {
+    1: { iface: 'chatbot', msg: 'incentive', label: 'Group1_Chatbot_誘因型' },
+    2: { iface: 'static',  msg: 'incentive', label: 'Group2_靜態頁面_誘因型' },
+    3: { iface: 'chatbot', msg: 'value',     label: 'Group3_Chatbot_價值型' },
+    4: { iface: 'static',  msg: 'value',     label: 'Group4_靜態頁面_價值型' }
+  },
+  // 兩種訊息皆為「一句開場＋2 個條列」，每個條列加粗一個關鍵詞
+  MESSAGES: {
+    incentive: '感謝您過去兩年的支持。如果您願意繼續訂閱，我們想提供您兩項專屬優惠：' +
+      '<ul><li><strong>免費延長一個月</strong>：下一期月費全免</li>' +
+      '<li><strong>續訂享八折</strong>：之後三個月只需 NT$ 479</li></ul>',
+    value: '感謝您過去兩年的支持。根據您的使用紀錄，有兩項 Premium 權益您還沒用過：' +
+      '<ul><li><strong>最新 Omnix 6.0 模型</strong>：推理與寫作最強</li>' +
+      '<li><strong>長文件分析</strong>：快速摘要大量資料</li></ul>'
+  },
+  KEEP_DONE: {
+    incentive: '優惠將自 12 月 5 日起套用，您的 Premium 權益維持不變。',
+    value: '您的 Premium 權益維持不變，下次扣款日為 12 月 5 日。'
+  }
+};
+
+const SHEETS = {
+  ASSIGN:  { name: '分派紀錄', headers: ['伺服器時間', 'pid', 'cond', 'iface', 'msg', '測試', '重新進入'] },
+  EVENTS:  { name: '行為事件', headers: ['伺服器時間', 'pid', 'cond', '經過毫秒', '事件'] },
+  ANSWERS: { name: '問卷作答', headers: ['伺服器時間', 'pid', 'cond', '頁面', '題號', '作答', '頁面停留毫秒'] },
+  SUMMARY: { name: '彙整', headers: ['伺服器時間', 'pid', 'cond', 'status', 'completionCode'] },
+  LOTTERY: { name: '抽獎名單', headers: ['伺服器時間', 'email'] }   // 不存 pid，無法與作答資料對應
+};
+
+/* ============================================================
+   網頁進入點
+   ============================================================ */
+function doGet(e) {
+  const p = (e && e.parameter) || {};
+  const test = p.test === '1';
+  const boot = {
+    pid: clean_(p.pid),
+    forceCond: test && CONFIG.CONDITIONS[p.cond] ? Number(p.cond) : null,
+    test: test
+  };
+  const t = HtmlService.createTemplateFromFile('Index');
+  t.boot = JSON.stringify(boot);
+  return t.evaluate()
+    .setTitle('Omnix AI')
+    .addMetaTag('viewport', 'width=device-width, initial-scale=1');
+}
+
+function include(name) {
+  return HtmlService.createHtmlOutputFromFile(name).getContent();
+}
+
+/**
+ * 第一次使用前執行一次：授權並建立工作表。
+ * 若專案沒有綁定試算表，會自動在雲端硬碟建立「Omnix 正式實驗資料」試算表。
+ * 執行完請看下方「執行記錄」中的網址。
+ */
+function setup() {
+  const ss = ss_();
+  PropertiesService.getScriptProperties().setProperty('SHEET_ID', ss.getId());
+  Object.keys(SHEETS).forEach(function (k) { sheet_(SHEETS[k]); });
+  Logger.log('完成！資料試算表網址：' + ss.getUrl());
+  return ss.getUrl();
+}
+
+/** 取得資料試算表：已記錄的 ID > 綁定的試算表 > 自動新建 */
+function ss_() {
+  const props = PropertiesService.getScriptProperties();
+  const id = props.getProperty('SHEET_ID');
+  if (id) return SpreadsheetApp.openById(id);
+  const active = SpreadsheetApp.getActiveSpreadsheet();
+  if (active) return active;
+  const created = SpreadsheetApp.create('Omnix 正式實驗資料');
+  props.setProperty('SHEET_ID', created.getId());
+  return created;
+}
+
+/* ============================================================
+   隨機分派：四組人數保持平衡（同一 pid 重新進入沿用原組別）
+   ============================================================ */
+function assign(pid, forceCond, test) {
+  pid = clean_(pid);
+  if (!pid) throw new Error('missing pid');
+  const lock = LockService.getScriptLock();
+  lock.waitLock(20000);
+  try {
+    const sh = sheet_(SHEETS.ASSIGN);
+    const rows = sh.getDataRange().getValues().slice(1);
+    for (var i = 0; i < rows.length; i++) {
+      if (String(rows[i][1]) === pid) {
+        sh.getRange(i + 2, 7).setValue((Number(rows[i][6]) || 0) + 1);
+        return payload_(pid, Number(rows[i][2]), test, true);
+      }
+    }
+    var cond;
+    if (test && CONFIG.CONDITIONS[forceCond]) {
+      cond = Number(forceCond);
+    } else {
+      const counts = { 1: 0, 2: 0, 3: 0, 4: 0 };
+      rows.forEach(function (r) { if (!r[5] && counts[r[2]] !== undefined) counts[r[2]]++; });
+      const min = Math.min.apply(null, Object.keys(counts).map(function (k) { return counts[k]; }));
+      const pool = Object.keys(counts).filter(function (k) { return counts[k] === min; });
+      cond = Number(pool[Math.floor(Math.random() * pool.length)]);
+    }
+    const c = CONFIG.CONDITIONS[cond];
+    sh.appendRow([new Date(), pid, cond, c.iface, c.msg, test ? 'test' : '', 0]);
+    return payload_(pid, cond, test, false);
+  } finally {
+    lock.releaseLock();
+  }
+}
+
+function payload_(pid, cond, test, resumed) {
+  const c = CONFIG.CONDITIONS[cond];
+  return {
+    pid: pid, cond: cond, iface: c.iface, msg: c.msg, label: c.label, test: !!test, resumed: !!resumed,
+    message: CONFIG.MESSAGES[c.msg], keepDone: CONFIG.KEEP_DONE[c.msg]
+  };
+}
+
+/* ============================================================
+   資料寫入
+   ============================================================ */
+/** 介面中的行為事件（分段送出，避免中途關閉時資料全失） */
+function logEvents(pid, cond, events) {
+  if (!Array.isArray(events) || !events.length) return 0;
+  const now = new Date();
+  const rows = events.slice(0, 500).map(function (ev) {
+    return [now, clean_(pid), Number(cond) || '', Number(ev.t) || 0, safe_(ev.e)];
+  });
+  appendRows_(SHEETS.EVENTS, rows);
+  return rows.length;
+}
+
+/** 每一頁問卷送出時寫入（長格式備份） */
+function saveAnswers(pid, cond, page, answers, ms) {
+  const now = new Date();
+  const rows = Object.keys(answers || {}).map(function (k) {
+    return [now, clean_(pid), Number(cond) || '', safe_(page), safe_(k), safe_(answers[k]), Number(ms) || ''];
+  });
+  if (rows.length) appendRows_(SHEETS.ANSWERS, rows);
+  return rows.length;
+}
+
+/** 抽獎報名：只存電子郵件與時間，不與受試者編號或作答連結 */
+function saveLottery(email) {
+  email = String(email || '').trim().slice(0, 200);
+  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) throw new Error('invalid email');
+  appendRows_(SHEETS.LOTTERY, [[new Date(), safe_(email)]]);
+  return true;
+}
+
+/** 完成（或中止）時寫入一列彙整資料（寬格式，欄位自動新增） */
+function complete(record) {
+  record = record || {};
+  const lock = LockService.getScriptLock();
+  lock.waitLock(20000);
+  try {
+    const sh = sheet_(SHEETS.SUMMARY);
+    var headers = sh.getRange(1, 1, 1, sh.getLastColumn()).getValues()[0];
+    const add = Object.keys(record).filter(function (k) { return headers.indexOf(k) < 0; });
+    if (add.length) {
+      sh.getRange(1, headers.length + 1, 1, add.length).setValues([add]);
+      headers = headers.concat(add);
+    }
+    const row = headers.map(function (h) {
+      if (h === '伺服器時間') return new Date();
+      return record[h] === undefined || record[h] === null ? '' : safe_(record[h]);
+    });
+    sh.appendRow(row);
+    return record.completionCode || '';
+  } finally {
+    lock.releaseLock();
+  }
+}
+
+/* ============================================================
+   工具函式
+   ============================================================ */
+function sheet_(def) {
+  const ss = ss_();
+  var sh = ss.getSheetByName(def.name);
+  if (!sh) {
+    sh = ss.insertSheet(def.name);
+    sh.getRange(1, 1, 1, def.headers.length).setValues([def.headers]);
+    sh.setFrozenRows(1);
+  }
+  return sh;
+}
+
+function appendRows_(def, rows) {
+  const lock = LockService.getScriptLock();
+  lock.waitLock(20000);
+  try {
+    const sh = sheet_(def);
+    sh.getRange(sh.getLastRow() + 1, 1, rows.length, rows[0].length).setValues(rows);
+  } finally {
+    lock.releaseLock();
+  }
+}
+
+/** pid 只允許英數、底線與連字號 */
+function clean_(s) {
+  return String(s || '').replace(/[^A-Za-z0-9_-]/g, '').slice(0, 64);
+}
+
+/** 避免試算表公式注入，並限制長度 */
+function safe_(v) {
+  if (typeof v === 'number' || typeof v === 'boolean') return v;
+  if (v && typeof v === 'object') v = JSON.stringify(v);
+  v = String(v === undefined || v === null ? '' : v).slice(0, 2000);
+  return /^[=+\-@]/.test(v) ? "'" + v : v;
+}
+
+function assignPretestMock(pid) { const o = new URLSearchParams(location.search).get('order') === 'vi' ? ['value','incentive'] : ['incentive','value']; return { pid, order: o, messages: CONFIG.MESSAGES, test: true }; }
+window.__db = { assign: [], events: [], answers: [], summary: [] };
+window.__mockServer = {
+  assign(pid, forceCond, test) { const cond = forceCond || 1 + Math.floor(Math.random() * 4); __db.assign.push({ pid, cond }); return payload_(pid, cond, test, false); },
+  logEvents(pid, cond, ev) { __db.events.push(...ev); return ev.length; },
+  saveAnswers(pid, cond, page, ans, ms) { __db.answers.push({ page, ans, ms }); return Object.keys(ans).length; },
+  assignPretest(pid, test) { const r = assignPretestMock(pid); return r; },
+  saveLottery(email) { __db.lottery = (__db.lottery || []).concat(email); return true; },
+  complete(rec, kind) { __db.summary.push(Object.assign({ _kind: kind || 'main' }, rec)); return rec.completionCode; }
+};
+</script>
+  <script>const BOOT = (() => { const p = new URLSearchParams(location.search); return { pid: p.get('pid') || 'PREVIEW', forceCond: Number(p.get('cond')) || null, test: true }; })();</script>
+  <script>
+/* ============================================================
+   問卷內容設定（題目改這裡即可）
+   題型：likert（1–7）、bipolar（語意差異 1–7）、single（單選，存選項文字）、text（簡答）、note（說明文字）
+   reverse: true 表示反向題（資料存原始分數，分析時再反轉）
+   ============================================================ */
+const AGREE = ["非常不同意", "非常同意"];
+
+const SURVEY = {
+  consent: {
+    id: "consent", title: "研究參與同意書", button: "下一步",
+    items: [
+      { type: "note", html: `
+        <p>本研究旨在探討使用者在線上訂閱服務流程中的操作體驗，以及對不同介面設計與訊息內容的理解與感受。</p>
+        <p>研究過程中，您將先閱讀一段情境描述，接著操作一個模擬的線上服務設定頁面，並依據閱讀內容、操作經驗及個人實際感受回答後續問題。整體填答時間約為 5–10 分鐘。研究採匿名方式進行，所有蒐集之資料僅供學術研究及整體統計分析使用，敬請安心填答。</p>
+        <p>如果您對本研究有任何疑問，歡迎透過以下方式與研究者聯繫：</p>
+        <p>研究者：尹柔鈞<br>所屬學校：國立政治大學企業管理研究所<br>電子郵件：celineyin91@gmail.com</p>
+        <p>再次感謝您的參與！</p>` },
+      { id: "CONSENT", type: "single", text: "請問您是否同意參與本研究？",
+        options: ["我已閱讀上述說明，同意參與本研究", "我不同意參與"] }
+    ]
+  },
+
+  scenario: {
+    id: "scenario", title: "情境說明", button: "開始",
+    items: [
+      { type: "note", html: `
+        <p>假設您已訂閱一項 AI 工具 Omnix AI 的付費方案兩年，最近決定取消。接下來會顯示 Omnix AI 的設定頁面，請依您平常的習慣操作，並自行決定接下來的行動。</p>
+        <p>每個決定都沒有標準答案，請依您的直覺操作。完成後，請點選畫面上的「回到問卷」繼續作答。</p>` }
+    ]
+  },
+
+  /* 介面結束後的題目：文字與「正式實驗題本」一致，依題本順序，題內不隨機
+     snapshot: true → 頁面上方顯示受試者剛才看到的挽留訊息畫面（由 Main 帶入） */
+  post: [
+    {
+      /* Q1 介面辨識：不顯示畫面，避免直接看圖作答 */
+      id: "check_iface", title: "剛才看到的內容",
+      items: [
+        { id: "MC1", type: "single", text: "剛才是誰向您提出保留訂閱的建議？", options: ["AI 助理", "網頁上的說明文字"] }
+      ]
+    },
+    {
+      /* Q2–Q4 訴求辨識、內容理解、誘因知覺 */
+      id: "checks", title: "剛才看到的內容", snapshot: true,
+      items: [
+        { id: "MC2", type: "single", text: "這則訊息主要是在：",
+          options: ["提供優惠或折扣讓我留下來", "提醒我這個服務本身的功能與用處"] },
+        { id: "MC3", type: "single", text: "根據這則訊息，如果您繼續訂閱，會發生什麼事？",
+          options: ["獲得免費一個月及之後三個月八折", "得知兩項還沒用過的 Premium 權益，價格不變"] },
+        { id: "IN1", type: "likert", text: "這則訊息透過提供金錢優惠，試圖挽留我繼續訂閱" }
+      ]
+    },
+    {
+      /* Q5–Q7 心理抗拒（抗拒反應，Reactance） */
+      id: "reactance", title: "剛才的挽留訊息", snapshot: true,
+      items: [
+        { id: "RE1", type: "likert", text: "這則挽留訊息具有侵入性" },
+        { id: "RE2", type: "likert", text: "這則挽留訊息讓我感到抗拒或反感" },
+        { id: "RE3", type: "likert", text: "我想要反對或抗議這則挽留訊息所傳達的做法" }
+      ]
+    },
+    {
+      /* Q8–Q12 對服務的態度（Spears & Singh, 2004） */
+      id: "attitude", title: "對 Omnix AI 的看法",
+      items: [
+        { id: "ATT1", type: "likert", text: "我認為剛才 Omnix AI 的服務是有吸引力的" },
+        { id: "ATT2", type: "likert", text: "我認為剛才 Omnix AI 的服務是是好的" },
+        { id: "ATT3", type: "likert", text: "我認為剛才 Omnix AI 的服務是令人愉快的" },
+        { id: "ATT4", type: "likert", text: "我認為剛才 Omnix AI 的服務是是正面評價的" },
+        { id: "ATT5", type: "likert", text: "我認為剛才 Omnix AI 的服務是是喜歡的" }
+      ]
+    },
+    {
+      /* Q13–Q17 資訊公平（Informational Justice） */
+      id: "justice", title: "剛才的挽留過程",
+      items: [
+        { id: "IJ1", type: "likert", text: "我認為這次挽留過程提供的資訊是坦誠的" },
+        { id: "IJ2", type: "likert", text: "這次挽留過程對相關程序提供了充分說明" },
+        { id: "IJ3", type: "likert", text: "這次挽留過程提供的說明是合理的" },
+        { id: "IJ4", type: "likert", text: "這次挽留過程適時提供了相關資訊" },
+        { id: "IJ5", type: "likert", text: "這次挽留過程提供的資訊符合我的個人需求" }
+      ]
+    },
+    {
+      /* 持續使用意圖（Bhattacherjee, 2001）＋負面口碑意圖（Grégoire & Fisher, 2008）＋注意力檢查 */
+      id: "intention", title: "之後的打算",
+      intro: "請想像剛才的取消經驗是您真實遇到的情況<br>接下來請回答，在這次退訂流程之後，您可能會怎麼向身邊的人談論 Omnix AI",
+      items: [
+        { id: "CI1", type: "likert", text: "我打算繼續使用 Omnix AI，而不是停止使用。" },
+        { id: "CI2", type: "likert", text: "我打算繼續使用 Omnix AI，而不是改用其他替代工具。" },
+        { id: "CI3", type: "likert", text: "如果可以的話，我想停止使用 Omnix AI", reverse: true },
+        { id: "WOM1", type: "likert", text: "在這次經驗之後，我會向身邊的人傳達有關 Omnix AI 的負面評價" },
+        { id: "WOM2", type: "likert", text: "我會在朋友面前說 Omnix AI 的負評" },
+        { id: "WOM3", type: "likert", text: "如果朋友正在尋找這類服務，我會建議他們不要訂閱 Omnix AI" },
+        { id: "AC1", type: "likert", text: "為確認您有認真作答，請在這一題選擇「6」" }
+      ]
+    },
+    {
+      id: "demographics", title: "基本資料", button: "送出",
+      items: [
+        { id: "D1", type: "single", text: "請問您的年齡為何？", options: ["18 歲以下", "18–24 歲", "25–34 歲", "35–44 歲", "45–54 歲", "55 歲（含）以上"] },
+        { id: "D2", type: "single", text: "請問您的性別為何？", options: ["男", "女", "不願透露"] },
+        { id: "D3", type: "single", text: "請問您目前的最高教育程度為何？", options: ["高中職", "大學", "碩士", "博士（含）以上"] },
+        { id: "D4", type: "single", text: "過去 12 個月內，您是否曾以個人名義付費訂閱至少一項數位服務？", options: ["是", "否"] },
+        { id: "D5", type: "single", text: "過去 12 個月內，您是否曾主動取消至少一項付費訂閱的數位服務？", options: ["是", "否"] },
+        /* 複選：D6 存所選文字（以「；」分隔），另存 D6_1–D6_8（1 = 有勾選）；「以上皆無」與其他選項互斥 */
+        { id: "D6", type: "multi", text: "您目前或過去曾付費訂閱哪些類型的數位服務？（複選）", exclusive: "以上皆無",
+          options: ["影音串流平台（Netflix、Disney+、YouTube Premium 等）", "音樂串流平台（Spotify、Apple Music 等）",
+                    "AI 工具服務（ChatGPT、Gemini、Claude 等）", "雲端儲存服務（Google One、iCloud、Dropbox 等）",
+                    "線上學習平台（Coursera、Hahow、Udemy 等）", "遊戲或遊戲會員服務", "其他", "以上皆無"] }
+      ]
+    }
+  ],
+
+  /* 結束說明：抽獎區塊與「再次感謝」由 Main 接在後面 */
+  debrief: `
+    <p>本研究中的 Omnix AI 與挽留訊息皆為研究設計的虛構內容，用於了解使用者如何理解不同類型的訊息。</p>
+    <p>您的資料僅以匿名方式用於學術分析，如果您對本研究有任何疑問，歡迎聯繫研究者：</p>
+    <p>研究者：尹柔鈞<br>所屬學校：國立政治大學企業管理研究所<br>電子郵件：celineyin91@gmail.com</p>`,
+  lottery: `
+    <h3 class="lot-title">抽獎活動（自由參與）</h3>
+    <p>為感謝您的填答，研究結束後將抽出 3 位幸運得主，每位可獲得 <strong>不老松足湯－足湯腳底按摩體驗</strong> 一份。若您有意願參加抽獎，請留下電子郵件地址，以便後續通知中獎結果及相關領獎資訊。</p>
+    <p class="lot-note">電子郵件僅供本次抽獎及聯繫使用，不會納入研究分析</p>`,
+  thanks: `<p>再次感謝您的參與！</p>`
+};
+
+/* ============================================================
+   問卷頁面渲染：showPage(page, progress) → Promise<{ answers, ms }>
+   ============================================================ */
+function showPage(page, progress) {
+  return new Promise(resolve => {
+    const host = document.querySelector("#survey .sv");
+    const t0 = Date.now();
+    let items = page.items.slice();
+    if (page.shuffle) {
+      const idx = items.map((it, i) => it.type === "likert" ? i : -1).filter(i => i >= 0);
+      const pool = idx.map(i => items[i]);
+      for (let i = pool.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [pool[i], pool[j]] = [pool[j], pool[i]]; }
+      idx.forEach((pos, k) => { items[pos] = pool[k]; });
+    }
+    const scale = name => `<div class="scale">${[1, 2, 3, 4, 5, 6, 7].map(v =>
+      `<label><input class="pick" type="radio" name="${name}" value="${v}"><span>${v}</span></label>`).join("")}</div>`;
+    const render = it => {
+      if (it.type === "note") return `<div class="note${it.plain ? "" : " box"}">${it.html}</div>`;
+      if (it.type === "likert") {
+        const [lo, hi] = it.anchors || AGREE;
+        return `<div class="q" data-id="${it.id}"><div class="q-text">${it.text}</div>${scale(it.id)}<div class="anchors"><span>${lo}</span><span>${hi}</span></div></div>`;
+      }
+      if (it.type === "bipolar") {
+        return `<div class="q" data-id="${it.id}"><div class="bipolar"><span class="end">${it.left}</span>${scale(it.id)}<span class="end r">${it.right}</span></div></div>`;
+      }
+      if (it.type === "single") {
+        return `<div class="q" data-id="${it.id}"><div class="q-text">${it.text}</div><div class="radios">${it.options.map(o =>
+          `<label class="radio"><input type="radio" name="${it.id}" value="${o}"><span>${o}</span></label>`).join("")}</div></div>`;
+      }
+      if (it.type === "multi") {
+        return `<div class="q" data-id="${it.id}"><div class="q-text">${it.text}</div><div class="radios">${it.options.map(o =>
+          `<label class="radio check"><input type="checkbox" name="${it.id}" value="${o}"><span>${o}</span></label>`).join("")}</div></div>`;
+      }
+      if (it.type === "text") {
+        return `<div class="q" data-id="${it.id}"><div class="q-text">${it.text}</div><textarea name="${it.id}" maxlength="1000"></textarea></div>`;
+      }
+      return "";
+    };
+    host.innerHTML = `
+      <div class="sv-progress"><i style="width:${Math.round(progress * 100)}%"></i></div>
+      <h2>${page.title}</h2>
+      ${page.intro ? `<p class="intro">${page.intro}</p>` : ""}
+      ${items.map(render).join("")}
+      <div class="sv-foot"><span class="err"></span><button class="btn btn-black btn-lg" id="next">${page.button || "下一頁"}</button></div>`;
+    window.scrollTo(0, 0);
+
+    host.querySelector("#next").onclick = () => {
+      const answers = {};
+      let firstMissing = null;
+      items.filter(it => it.id).forEach(it => {
+        const q = host.querySelector(`.q[data-id="${it.id}"]`);
+        let v;
+        if (it.type === "text") v = host.querySelector(`textarea[name="${it.id}"]`).value.trim();
+        else if (it.type === "multi") {
+          const picked = [...host.querySelectorAll(`input[name="${it.id}"]:checked`)].map(c => c.value);
+          it.options.forEach((o, k) => { answers[`${it.id}_${k + 1}`] = picked.includes(o) ? 1 : 0; });
+          v = picked.join("；");
+        }
+        else { const c = host.querySelector(`input[name="${it.id}"]:checked`); v = c ? c.value : ""; }
+        if (it.type === "likert" || it.type === "bipolar") v = v === "" ? "" : Number(v);
+        const missing = v === "" && !it.optional;
+        q.classList.toggle("missing", missing);
+        if (missing && !firstMissing) firstMissing = q;
+        answers[it.id] = v;
+      });
+      if (firstMissing) {
+        host.querySelector(".err").textContent = "還有題目尚未作答";
+        firstMissing.scrollIntoView({ behavior: "smooth", block: "center" });
+        return;
+      }
+      resolve({ answers, ms: Date.now() - t0 });
+    };
+    host.querySelectorAll("input").forEach(inp => inp.addEventListener("change", () => {
+      const q = inp.closest(".q"); if (q) q.classList.remove("missing");
+    }));
+    /* 複選題的互斥選項（例如「以上皆無」） */
+    items.filter(it => it.type === "multi" && it.exclusive).forEach(it => {
+      const boxes = [...host.querySelectorAll(`input[name="${it.id}"]`)];
+      boxes.forEach(b => b.addEventListener("change", () => {
+        if (!b.checked) return;
+        boxes.forEach(o => { if (o !== b && (b.value === it.exclusive || o.value === it.exclusive)) o.checked = false; });
+      }));
+    });
+  });
+}
+
+/* 結束頁（無按鈕） */
+function showMessage(title, html) {
+  const host = document.querySelector("#survey .sv");
+  host.innerHTML = `<h2>${title}</h2><div class="intro">${html}</div>`;
+  window.scrollTo(0, 0);
+}
+</script>
+
+  <script>
+/* ============================================================
+   實驗介面：Omnix AI 設定頁 → 方案頁 → 取消對話框
+   runInterface(A) 回傳 Promise，受試者按「回到問卷」時以行為資料 resolve。
+   A = 後端 assign() 回傳的組別資料 { pid, cond, iface, msg, message, keepDone }
+   ============================================================ */
+function runInterface(A) {
+  return new Promise(resolve => {
+
+  /* ---- 共用文字與時間設定（四組完全相同） ---- */
+  const PLAN = { name: "Premium 個人方案", price: "NT$ 599 / 月", months: "2 年", next: "12 月 5 日" };
+  const BOT_NAME = "Omnix";
+  const BOT_INTRO = "您好，我是 Omnix，Omnix AI 的會員助理。";
+  const BOT_ASK = "可以告訴我您想取消的原因嗎？";
+  const BOT_ACK = "了解，謝謝您告訴我。";
+  const STATIC_ASK = "請選擇取消原因";
+  const STATIC_ACK = "感謝您的回饋";
+  const STATIC_TITLE = "在您取消之前";
+  const KEEP_LABEL = "保留我的訂閱";
+  const CANCEL_LABEL = "仍要取消";
+  const REASONS = ["價格太高", "使用頻率低", "找到其他服務", "其他"];
+  const TYPING_MS = 1500;    // chatbot 每則訊息前的「打字中」時間
+  const ADVANCE_MS = 1500;   // 做出選擇後停留的時間（四組相同）
+
+  /* ---- 行為記錄 ---- */
+  const t0 = performance.now();
+  const now = () => Math.round(performance.now() - t0);
+  const log = {
+    path: [], offPathClicks: 0, rtReachCancelMs: null, reason: null, rtReasonMs: null,
+    clicks: 0, retentionChoice: null, rtDecisionMs: null, finalChoice: null, outcome: null, interfaceMs: null
+  };
+  const events = [];
+  let flushed = 0;
+  const mark = e => events.push({ t: now(), e });
+  /* 分段送出事件：找到取消入口、做出挽留選擇、完成時各送一次 */
+  const flush = () => {
+    const batch = events.slice(flushed);
+    flushed = events.length;
+    if (batch.length) callServer("logEvents", A.pid, A.cond, batch);
+  };
+
+  const root = document.getElementById("omnix");
+  const app = document.getElementById("app");
+  const toastEl = document.getElementById("toast");
+  const el = html => { const d = document.createElement("div"); d.innerHTML = html.trim(); return d.firstChild; };
+  const wait = ms => new Promise(r => setTimeout(r, ms));
+  const CHECK = `<svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><path d="M3 8.5l3 3 7-7" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>`;
+
+  /* ---- 點擊計數與未開放功能 ---- */
+  let toastTimer;
+  /* 點選 label 時瀏覽器會再對 input 觸發一次合成 click（detail = 0），不重複計算 */
+  const onClickCapture = e => { if (e.detail === 0 && e.target.matches("input")) return; log.clicks++; };
+  const onClick = e => {
+    const t = e.target.closest("[data-inert]");
+    if (!t) return;
+    log.offPathClicks++;
+    mark("offpath_" + t.dataset.inert);
+    toastEl.textContent = "此功能在本研究中未開放";
+    toastEl.classList.add("show");
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(() => toastEl.classList.remove("show"), 1600);
+  };
+  document.addEventListener("click", onClickCapture, true);
+  document.addEventListener("click", onClick);
+  const hideToast = () => toastEl.classList.remove("show");
+  const visit = page => { hideToast(); log.path.push(page); mark("page_" + page); };
+
+  /* ============ 1. 訂閱與付款（起始頁） ============ */
+  const SIDE = [["overview", "帳戶總覽"], ["profile", "個人資料"], ["billing", "訂閱與付款"], ["notify", "通知"], ["privacy", "隱私與安全"], ["devices", "裝置"]];
+  function renderBilling() {
+    visit("billing");
+    app.innerHTML = `
+      <h1>設定</h1>
+      <div class="settings">
+        <nav class="side">
+          ${SIDE.map(([k, label]) => k === "billing" ? `<a class="on">${label}</a>` : `<a data-inert="side_${k}">${label}</a>`).join("")}
+        </nav>
+        <div>
+          <section class="sec">
+            <div class="sec-head"><h2>目前方案</h2></div>
+            <div class="plan-hero">
+              <div>
+                <div class="name">${PLAN.name}<span class="tag">使用中</span></div>
+                <div class="meta">${PLAN.price}　·　已訂閱 ${PLAN.months}　·　下次扣款日 ${PLAN.next}</div>
+              </div>
+              <div class="cta">
+                <button class="btn btn-black btn-lg" id="changePlan">變更方案</button>
+                <div class="hint">可在此升級、降級或取消方案</div>
+              </div>
+            </div>
+          </section>
+          <section class="sec">
+            <div class="sec-head"><h2>付款方式</h2><button class="link" data-inert="pay_update">更新</button></div>
+            <div class="row"><span class="k">信用卡</span><span>•••• 4821　到期 08/28</span></div>
+          </section>
+          <section class="sec">
+            <div class="sec-head"><h2>帳單紀錄</h2><button class="link" data-inert="bill_all">查看全部</button></div>
+            <table class="bill">
+              <tr><th>日期</th><th>項目</th><th>金額</th><th>狀態</th></tr>
+              <tr><td>2026/11/05</td><td>${PLAN.name}</td><td>NT$ 599</td><td>已付款</td></tr>
+              <tr><td>2026/10/05</td><td>${PLAN.name}</td><td>NT$ 599</td><td>已付款</td></tr>
+              <tr><td>2026/09/05</td><td>${PLAN.name}</td><td>NT$ 599</td><td>已付款</td></tr>
+            </table>
+          </section>
+        </div>
+      </div>`;
+    document.getElementById("changePlan").onclick = openPlans;
+  }
+
+  /* ============ 2. 變更方案（全螢幕覆蓋，不換頁） ============ */
+  let overlay = null;
+  function openPlans() {
+    visit("plans");
+    const plan = (name, tagline, desc, price, feats, button, current) => `
+      <div class="plan ${current ? "current" : ""}">
+        <div class="pname">${name}${current ? '<span class="tag">目前方案</span>' : ""}</div>
+        <div class="tagline">${tagline}</div>
+        <p class="desc">${desc}</p>
+        <div class="price">${price}</div>
+        ${button}
+        <ul class="feats">${feats.map(f => `<li>${CHECK}<span>${f}</span></li>`).join("")}</ul>
+      </div>`;
+    overlay = el(`
+      <div class="overlay" role="dialog" aria-label="變更方案">
+        <button class="ov-close" id="closePlans" aria-label="關閉">✕</button>
+        <div class="ov-inner">
+          <h1>變更方案</h1>
+          <p class="ov-sub">方案變更將於下一個計費週期生效。</p>
+          <div class="cancel-bar">
+            <span>不想繼續使用 Premium？</span>
+            <button class="btn btn-black" id="cancelEntry">取消訂閱</button>
+          </div>
+          <div class="plans">
+            ${plan("Premium", "你的 AI 助理", "解鎖進階模型，越用越了解你的需求。", "NT$ 599 <small>/ 月</small>",
+              ["最新 Omnix 6.0 模型", "長文件分析", "記憶與自訂助理", "更高使用額度"], `<button class="btn" disabled>你目前的方案</button>`, true)}
+            ${plan("企業版", "適合成長中的團隊", "安全的共用工作區與集中管理。", "NT$ 2,799 <small>/ 月</small>",
+              ["無上限使用 Omnix 6.0 模型", "團隊共用工作區與專案", "串接公司知識庫的自訂 AI 助理", "管理後台與 SSO 單一登入", "資料不用於模型訓練", "專人客服與 99.9% 服務可用性保證"], `<button class="btn" data-inert="plan_enterprise">升級至企業版</button>`)}
+          </div>
+        </div>
+      </div>`);
+    document.body.appendChild(overlay);
+    requestAnimationFrame(() => requestAnimationFrame(() => overlay.classList.add("show")));
+    overlay.querySelector("#closePlans").onclick = closePlans;
+    overlay.querySelector("#cancelEntry").onclick = () => {
+      log.rtReachCancelMs = now();
+      mark("cancel_clicked");
+      flush();
+      openCancelDialog();
+    };
+  }
+  async function closePlans() {
+    mark("plans_closed");
+    overlay.classList.remove("show");
+    await wait(220);
+    overlay.remove(); overlay = null;
+    log.path.push("billing"); mark("page_billing");
+  }
+
+  /* ============ 3. 取消流程：所有步驟都在同一個對話框內切換 ============ */
+  let dlg = null, backdrop = null;
+  function openCancelDialog() {
+    hideToast();
+    mark("retention_shown");
+    backdrop = el(`<div class="backdrop"><div class="dialog" role="dialog" aria-modal="true" aria-label="取消訂閱"></div></div>`);
+    document.body.appendChild(backdrop);
+    dlg = backdrop.querySelector(".dialog");
+    requestAnimationFrame(() => requestAnimationFrame(() => backdrop.classList.add("show")));
+    if (A.iface === "chatbot") runChatbot(); else runStatic();
+  }
+  /* 切換對話框內容；bind 在內容插入後立即綁定按鈕，避免動畫期間點擊無效 */
+  async function swap(html, bind) {
+    const old = dlg.querySelector(".view");
+    if (old) { dlg.style.height = dlg.offsetHeight + "px"; old.classList.add("fading"); await wait(180); }
+    dlg.innerHTML = html;
+    if (bind) bind();
+    const v = dlg.querySelector(".view");
+    if (old) {
+      v.classList.add("fading");
+      dlg.style.height = v.offsetHeight + "px";
+      await wait(30);
+      v.classList.remove("fading");
+      await wait(260);
+      dlg.style.height = "";
+    }
+  }
+  async function advance(btn, next) {
+    dlg.querySelectorAll("button").forEach(b => b.disabled = true);
+    btn.classList.add("chosen");
+    btn.textContent = "✓ " + btn.textContent;
+    await wait(ADVANCE_MS);
+    next();
+  }
+  let tReasonsShown = null, tChoicesShown = null;
+  function reasonMade(reason) {
+    log.reason = reason;
+    log.rtReasonMs = tReasonsShown == null ? null : now() - tReasonsShown;
+    mark("reason_" + REASONS.indexOf(reason));
+  }
+  function choiceMade(choice) {
+    log.retentionChoice = choice;
+    log.rtDecisionMs = tChoicesShown == null ? null : now() - tChoicesShown;
+    mark("retention_" + choice);
+    flush();
+  }
+
+  /* ---- 靜態版：原因 → 挽留訊息 ---- */
+  async function runStatic() {
+    await swap(`
+      <div class="view">
+        <h3>${STATIC_ASK}</h3>
+        <div class="radios">
+          ${REASONS.map((r, i) => `<label class="radio"><input type="radio" name="reason" value="${i}"><span>${r}</span></label>`).join("")}
+        </div>
+      </div>`, () => {
+      tReasonsShown = now(); mark("reasons_shown");
+      /* 點選原因即送出（一次點擊，與 chatbot 的快速回覆相同） */
+      dlg.querySelectorAll("input[name=reason]").forEach(inp => inp.onchange = submitReason);
+    });
+  }
+  async function submitReason() {
+      const picked = dlg.querySelector("input[name=reason]:checked");
+      if (!picked) return;
+      dlg.querySelectorAll("input[name=reason]").forEach(i => i.disabled = true);
+      reasonMade(REASONS[Number(picked.value)]);
+      await wait(400);
+      await swap(`
+        <div class="view">
+          <div class="ack">${CHECK}${STATIC_ACK}</div>
+          <h3>${STATIC_TITLE}</h3>
+          <div class="msg">${A.message}</div>
+          <div class="foot">
+            <button class="btn" id="cancel">${CANCEL_LABEL}</button>
+            <button class="btn btn-black" id="keep">${KEEP_LABEL}</button>
+          </div>
+        </div>`, () => {
+        tChoicesShown = now(); mark("choices_shown");
+        A.snapshot = dlg.innerHTML;   // 挽留訊息畫面，後測時再顯示給受試者
+        dlg.querySelector("#keep").onclick = e => { choiceMade("keep"); advance(e.currentTarget, () => showDone("kept")); };
+        dlg.querySelector("#cancel").onclick = e => { choiceMade("cancel"); advance(e.currentTarget, showConfirm); };
+      });
+  }
+
+  /* ---- Chatbot 版：兩輪對話 ---- */
+  async function runChatbot() {
+    await swap(`
+      <div class="view chat">
+        <div class="chat-head">
+          <div class="bot-av">O</div>
+          <div><div class="chat-name">${BOT_NAME}</div><div class="chat-sub"><span class="dot"></span>AI 會員助理</div></div>
+        </div>
+        <div class="chat-body" id="body"><div class="sys">您已開始取消流程</div></div>
+        <div class="chat-foot">
+          <div class="quick" id="quick"></div>
+          <div class="composer">請點選上方選項回覆</div>
+        </div>
+      </div>`);
+    const body = dlg.querySelector("#body");
+    const quick = dlg.querySelector("#quick");
+    const scroll = () => { body.scrollTop = body.scrollHeight; };
+    const say = async text => {
+      const typing = el(`<div class="m-ai"><div class="bot-av">O</div><div class="typing"><i></i><i></i><i></i></div></div>`);
+      body.appendChild(typing); scroll();
+      await wait(TYPING_MS);
+      typing.remove();
+      body.appendChild(el(`<div class="m-ai"><div class="bot-av">O</div><div class="t">${text}</div></div>`)); scroll();
+    };
+    const userSays = text => { body.appendChild(el(`<div class="m-user">${text}</div>`)); scroll(); };
+
+    await wait(400);
+    await say(BOT_INTRO);
+    await say(BOT_ASK);
+    await wait(300);
+    quick.innerHTML = REASONS.map((r, i) => `<button class="btn btn-outline" data-r="${i}">${r}</button>`).join("");
+    tReasonsShown = now(); mark("reasons_shown");
+    const reason = await new Promise(res => quick.querySelectorAll("button").forEach(b => b.onclick = () => res(REASONS[Number(b.dataset.r)])));
+    quick.innerHTML = "";
+    reasonMade(reason);
+    userSays(reason);
+
+    await wait(400);
+    await say(BOT_ACK);
+    await say(A.message);
+    await wait(300);
+    quick.innerHTML = `
+      <button class="btn btn-outline" id="cancel">${CANCEL_LABEL}</button>
+      <button class="btn btn-black" id="keep">${KEEP_LABEL}</button>`;
+    tChoicesShown = now(); mark("choices_shown");
+    A.snapshot = dlg.innerHTML;   // 挽留訊息畫面，後測時再顯示給受試者
+    const reply = async (label, choice, next) => {
+      quick.innerHTML = "";
+      choiceMade(choice);
+      userSays(label);
+      await wait(ADVANCE_MS);
+      next();
+    };
+    quick.querySelector("#keep").onclick = () => reply(KEEP_LABEL, "keep", () => showDone("kept"));
+    quick.querySelector("#cancel").onclick = () => reply(CANCEL_LABEL, "cancel", showConfirm);
+  }
+
+  /* ---- 最終確認（四組相同） ---- */
+  async function showConfirm() {
+    mark("confirm_shown");
+    await swap(`
+      <div class="view">
+        <h3>確認取消 Premium 訂閱？</h3>
+        <p>取消後，您的 Premium 權益將於 ${PLAN.next} 結束，之後不會再扣款。</p>
+        <div class="foot">
+          <button class="btn" id="back">${KEEP_LABEL}</button>
+          <button class="btn btn-black" id="confirm">確認取消</button>
+        </div>
+      </div>`, () => {
+      dlg.querySelector("#confirm").onclick = e => { log.finalChoice = "confirm_cancel"; mark("confirm_cancel"); advance(e.currentTarget, () => showDone("cancelled")); };
+      dlg.querySelector("#back").onclick = e => { log.finalChoice = "keep_at_confirm"; mark("keep_at_confirm"); advance(e.currentTarget, () => showDone("kept")); };
+    });
+  }
+
+  /* ---- 結果（四組相同，保留文字依訊息訴求） ---- */
+  async function showDone(outcome) {
+    log.outcome = outcome;
+    mark("done_" + outcome);
+    const title = outcome === "cancelled" ? "您的訂閱已取消" : "已為您保留訂閱";
+    const text = outcome === "cancelled" ? `您仍可使用 Premium 功能至 ${PLAN.next}，之後不會再扣款。` : A.keepDone;
+    await swap(`
+      <div class="view">
+        <h3>${title}</h3>
+        <p>${text}</p>
+        <div class="foot"><button class="btn btn-black" id="finish">回到問卷</button></div>
+      </div>`, () => { dlg.querySelector("#finish").onclick = finish; });
+  }
+
+  /* ---- 結束介面，交回問卷 ---- */
+  function finish() {
+    mark("finish");
+    log.interfaceMs = now();
+    flush();
+    document.removeEventListener("click", onClickCapture, true);
+    document.removeEventListener("click", onClick);
+    if (backdrop) backdrop.remove();
+    if (overlay) overlay.remove();
+    root.hidden = true;
+    app.innerHTML = "";
+    resolve(Object.assign({}, log, { path: log.path.join(">") }));
+  }
+
+  /* ---- 開始 ---- */
+  root.hidden = false;
+  window.scrollTo(0, 0);
+  mark("interface_start");
+  renderBilling();
+  });
+}
+</script>
+
+  <script>
+/* ============================================================
+   流程控制：同意書 → 情境 → 實驗介面 → 後測 → 結束說明
+   ============================================================ */
+
+/* 呼叫後端（失敗時自動重試 3 次） */
+function callServer(fn, ...args) {
+  const once = () => new Promise((resolve, reject) => {
+    if (window.google && google.script && google.script.run) {
+      google.script.run.withSuccessHandler(resolve).withFailureHandler(reject)[fn](...args);
+    } else if (window.__mockServer) {
+      Promise.resolve(window.__mockServer[fn](...args)).then(resolve, reject);
+    } else {
+      resolve(null);
+    }
+  });
+  return (async () => {
+    for (let i = 0; i < 3; i++) {
+      try { return await once(); }
+      catch (err) { if (i === 2) throw err; await new Promise(r => setTimeout(r, 800 * (i + 1))); }
+    }
+  })();
+}
+
+const store = (k, v) => { try { localStorage.setItem(k, v); } catch (e) {} };
+const load = k => { try { return localStorage.getItem(k); } catch (e) { return null; } };
+const randomId = (prefix, n) => prefix + Array.from({ length: n }, () => "ABCDEFGHJKLMNPQRSTUVWXYZ23456789"[Math.floor(Math.random() * 32)]).join("");
+
+(async function main() {
+  const surveyEl = document.getElementById("survey");
+  const startMs = Date.now();
+
+  /* 受試者編號：網址帶入 > 本機記錄 > 自動產生 */
+  const pid = BOOT.pid || load("omnix_pid") || randomId("P", 8);
+  store("omnix_pid", pid);
+  if (!BOOT.test && load("omnix_done_" + pid)) {
+    return showMessage("您已完成本研究", "<p>感謝您的參與，本研究每人只需填答一次。</p>");
+  }
+
+  let A;
+  try { A = await callServer("assign", pid, BOOT.forceCond, BOOT.test); }
+  catch (e) { A = null; }
+  if (!A) return showMessage("連線發生問題", "<p>請重新整理頁面再試一次。若問題持續發生，請聯絡研究者。</p>");
+
+  const answers = {};
+  const record = {
+    pid, cond: A.cond, iface: A.iface, msg: A.msg, test: A.test ? 1 : 0, resumed: A.resumed ? 1 : 0,
+    startedAt: new Date().toISOString(), userAgent: navigator.userAgent.slice(0, 200)
+  };
+  const totalSteps = 2 + 1 + SURVEY.post.length;
+  const ask = async (page, step) => {
+    const r = await showPage(page, step / totalSteps);
+    Object.assign(answers, r.answers);
+    record["ms_" + page.id] = r.ms;
+    callServer("saveAnswers", pid, A.cond, page.id, r.answers, r.ms).catch(() => {});
+    return r.answers;
+  };
+  const endEarly = async (status, title, html) => {
+    showMessage(title, "<p>資料傳送中…</p>");
+    try { await callServer("complete", Object.assign(record, answers, { status, endedAt: new Date().toISOString() })); } catch (e) {}
+    showMessage(title, html);
+  };
+
+  /* 1. 同意書 */
+  let a = await ask(SURVEY.consent, 0);
+  if (a.CONSENT !== SURVEY.consent.items[1].options[0]) {
+    return endEarly("declined", "感謝您的閱讀", "<p>您選擇不參與本研究，可以直接關閉此頁面。</p>");
+  }
+
+  /* 2. 情境與取消意圖 */
+  await ask(SURVEY.scenario, 1);
+
+  /* 3. 實驗介面 */
+  surveyEl.hidden = true;
+  const ilog = await runInterface(A);
+  surveyEl.hidden = false;
+  Object.assign(record, ilog);
+
+  /* 4. 後測 */
+  const snap = A.snapshot ? `<div class="snap-label">以下是您剛才看到的挽留訊息畫面</div><div class="snap" aria-hidden="true"><div class="dialog">${A.snapshot}</div></div>` : "";
+  for (let i = 0; i < SURVEY.post.length; i++) {
+    const page = SURVEY.post[i];
+    const shown = page.snapshot && snap ? Object.assign({}, page, { items: [{ type: "note", plain: true, html: snap }].concat(page.items) }) : page;
+    await ask(shown, 3 + i);
+  }
+
+  /* 5. 送出並顯示結束說明 */
+  Object.assign(record, answers, {
+    status: "complete",
+    completionCode: randomId("OMX-", 6),
+    endedAt: new Date().toISOString(),
+    totalSec: Math.round((Date.now() - startMs) / 1000)
+  });
+  showMessage("資料傳送中…", "<p>請稍候，請勿關閉頁面。</p>");
+  let saved = true;
+  try { await callServer("complete", record); store("omnix_done_" + pid, "1"); }
+  catch (e) { saved = false; }
+
+  showMessage("感謝您的參與", SURVEY.debrief +
+    `<div class="lottery">${SURVEY.lottery}
+      <div class="lot-form" id="lotForm">
+        <input type="text" inputmode="email" id="lotEmail" name="lot_contact" placeholder="電子郵件（選填）" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" maxlength="200">
+        <button class="btn btn-black" id="lotSend">送出</button>
+      </div>
+      <div class="lot-msg" id="lotMsg">不參加抽獎可略過此欄，您的作答已完成送出。</div>
+    </div>` +
+    SURVEY.thanks +
+    `<p style="margin-top:22px">您的完成碼：</p><div class="code">${record.completionCode}</div>` +
+    (saved ? "<p>請保留此完成碼，作為完成本研究的證明。</p>"
+           : `<p style="color:#c0392b">資料傳送時發生問題，請將完成碼與受試者編號（${pid}）提供給研究者。</p>`));
+
+  /* 抽獎電子郵件（選填）：另存「抽獎名單」，不與作答資料連結 */
+  const lotEmail = document.getElementById("lotEmail"), lotSend = document.getElementById("lotSend"), lotMsg = document.getElementById("lotMsg");
+  lotSend.onclick = async () => {
+    const email = lotEmail.value.trim();
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) { lotMsg.textContent = "請輸入有效的電子郵件地址"; lotMsg.className = "lot-msg err"; return; }
+    lotSend.disabled = true; lotEmail.disabled = true; lotMsg.className = "lot-msg"; lotMsg.textContent = "傳送中…";
+    try {
+      await callServer("saveLottery", email);
+      document.getElementById("lotForm").remove();
+      lotMsg.textContent = "已收到您的抽獎登記，謝謝！";
+    } catch (e) {
+      lotSend.disabled = false; lotEmail.disabled = false;
+      lotMsg.className = "lot-msg err"; lotMsg.textContent = "傳送失敗，請再試一次";
+    }
+  };
+})();
+</script>
+
+</body>
+</html>
